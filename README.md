@@ -110,7 +110,7 @@
 
 ## :classical_building: 아키텍처
 
-![diagram](https://user-images.githubusercontent.com/87461594/163529463-ec963eb1-148b-4813-801a-bfce80b186bb.png)
+![diagram](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/419d850a-169f-48a9-a788-36c615bb5887/Asset_6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220425%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220425T055749Z&X-Amz-Expires=86400&X-Amz-Signature=ca592d5a1c8e254371b0c0760c418f9c8f8ed7d13308dcd9b91bab85eecb77f3&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Asset_6.png%22&x-id=GetObject)
 
 <br>
 
@@ -118,7 +118,8 @@
 
 1. 와이어프레임
 
-![wireframe](https://user-images.githubusercontent.com/87461594/163529466-ba846406-c920-40a2-8246-78d28c285b8d.png)
+![wireframe1](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/677f04ae-c0ed-4191-a28d-10a8ec9e9603/unknown0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220425%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220425T061043Z&X-Amz-Expires=86400&X-Amz-Signature=eeb4e9a43545582b7ad4346108d7f44a562e6c0afb9b36151ecf1c23ce0c4d8d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22unknown0.png%22&x-id=GetObject)
+![wireframe2](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/00dab0c4-c184-4a0b-b10b-981ad6302bc7/unknown.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220425%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220425T061046Z&X-Amz-Expires=86400&X-Amz-Signature=a87204da759f1b1ed1572dd71e15a71fc73bc43602f9e12d3ba363304aa049c5&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22unknown.png%22&x-id=GetObject)
 
 <br>
 
