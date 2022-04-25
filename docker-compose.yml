@@ -1,0 +1,17 @@
+version: "3"
+services:
+  backend:
+    container_name: ecolog_backend
+    image: "ecolog_backend:0.1"
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - ecolog
+    environment:
+      - TZ=Asia/Seoul
+
+networks:
+  ecolog:
