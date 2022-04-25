@@ -1,48 +1,13 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import RootScreen from './screens/RootScreen';
 
 function App() {
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.ecolog}>Ecolog</Text>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.ecolog}>build test</Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <RootScreen />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    height: 150,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ecolog: {
-    color: 'black',
-    fontSize: 30,
-  },
-});
 
 export default App;
