@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,12 @@ public class PostServiceImpl implements PostService {
 
         post = postRepository.save(post);
         return true;
+    }
+
+    @Override
+    public List<Post> getPostList(long communityNo) {
+        List<Post> postList = postRepository.findByCommunityNo(communityNo);
+        return postList;
     }
 
 }

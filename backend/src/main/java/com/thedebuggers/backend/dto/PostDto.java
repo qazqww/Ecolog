@@ -13,6 +13,5 @@ public class PostDto {
     private String image;
     private LocalDate createdAt;
     private boolean isOpen;
-    private int communityNo;
     private int userNo;
 }
