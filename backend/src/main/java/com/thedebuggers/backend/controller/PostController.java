@@ -1,16 +1,18 @@
 package com.thedebuggers.backend.controller;
 
-import com.thedebuggers.backend.domain.entity.Community;
 import com.thedebuggers.backend.domain.entity.Post;
-import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.dto.PostDto;
 import com.thedebuggers.backend.service.PostService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(value = "커뮤니티 게시물 관련 API", tags = "Post")
+@Slf4j
 @RequestMapping("/api/v1/community/{communityNo}/post")
 @RequiredArgsConstructor
 @RestController
@@ -19,23 +21,27 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    private ResponseEntity<Boolean> registPost(@PathVariable int communityNo, @RequestBody PostDto postDto) {
-
-//        User user = UserService.getUser(postDto.getUserNo());
-//        Community community = CommunityService.getCommunity(communityNo));
-
-        User user = new User();
-        Community community = new Community();
-        user.setNo(1);
-        community.setNo(1);
-
-        boolean result = postService.registPost(postDto, user, community);
+    @ApiOperation(value = "게시물 등록")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<Boolean> registPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
+                                               @ApiParam("communityNo, createdAt은 사용되지 않음.") @RequestBody PostDto postDto) {
+        postDto.setCommunityNo(communityNo);
+        boolean result = postService.registPost(postDto);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    private ResponseEntity<List<Post>> getPostList(@PathVariable long communityNo) {
-//        Community community = CommunityService.getCommunity(communityNo));
+    @ApiOperation(value = "게시물 목록 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<List<Post>> getPostList(@ApiParam(defaultValue = "1") @PathVariable long communityNo) {
         List<Post> postList = postService.getPostList(communityNo);
         return ResponseEntity.ok(postList);
     }
