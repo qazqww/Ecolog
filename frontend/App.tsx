@@ -1,5 +1,9 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  CustomTheme,
+} from '@react-navigation/native';
 import RootScreen from './screens/RootScreen';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
@@ -15,11 +19,25 @@ const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
+const customTheme: CustomTheme = {
+  dark: false,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#000000',
+    background: '#ffffff',
+    card: '#000000',
+    text: '#000000',
+    border: '#000000',
+    notification: '#000000',
+    button: '#2f00ff',
+  },
+};
+
 function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
+        <NavigationContainer theme={customTheme}>
           <RootScreen />
         </NavigationContainer>
       </PersistGate>
