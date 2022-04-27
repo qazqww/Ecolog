@@ -43,4 +43,10 @@ public class PostServiceImpl implements PostService {
         return postList;
     }
 
+    @Override
+    public Post getPost(long postNo) {
+        Post post = postRepository.findByNo(postNo);
+        return post;
+    }
+
 }
