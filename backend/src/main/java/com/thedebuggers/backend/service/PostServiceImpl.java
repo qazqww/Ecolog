@@ -37,15 +37,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getAllPost() {
+        return postRepository.findByIsOpen(true);
+    }
+
+    @Override
     public List<Post> getPostList(long communityNo) {
-        List<Post> postList = postRepository.findByCommunityNo(communityNo);
-        return postList;
+        return postRepository.findByCommunityNo(communityNo);
     }
 
     @Override
     public Post getPost(long postNo) {
-        Post post = postRepository.findByNo(postNo);
-        return post;
+        return postRepository.findByNo(postNo);
     }
 
     @Override

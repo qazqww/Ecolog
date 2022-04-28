@@ -35,14 +35,21 @@ public class PostController {
     }
 
     @GetMapping
-    @ApiOperation(value = "커뮤니티 별 게시물 목록 조회")
+    @ApiOperation(value = "게시물 목록 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<List<Post>> getPostList(@ApiParam(defaultValue = "1") @PathVariable long communityNo) {
-        List<Post> postList = postService.getPostList(communityNo);
+    private ResponseEntity<List<Post>> getPostList(
+            @ApiParam(value = "0 : 전체 커뮤니티의 공개 게시물, 1~ : 해당 커뮤니티의 전체 게시물", defaultValue = "1") @PathVariable long communityNo) {
+        List<Post> postList;
+        if (communityNo == 0) {
+            postList = postService.getAllPost();
+        }
+        else {
+            postList = postService.getPostList(communityNo);
+        }
         return ResponseEntity.ok(postList);
     }
 
