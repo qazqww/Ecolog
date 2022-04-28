@@ -4,6 +4,7 @@ package com.thedebuggers.backend.domain.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +23,8 @@ public class Comment {
     private long no;
 
     private String content;
+
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @ManyToOne
