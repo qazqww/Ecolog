@@ -18,4 +18,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("update Post p set p.title = :#{#post.title}, p.content = :#{#post.content}," +
             "p.image = :#{#post.image}, p.isOpen = :#{#post.open} where p.no = :#{#postNo}")
     void modifyPost(long postNo, Post post);
+
+    @Modifying
+    @Query("update Post p set p.likeCount = p.likeCount + 1 where p.no = :#{#postNo}")
+    void updateLikePlus(long postNo);
+
+    @Modifying
+    @Query("update Post p set p.likeCount = p.likeCount - 1 where p.no = :#{#postNo}")
+    void updateLikeMinus(long postNo);
 }
