@@ -1,12 +1,10 @@
 import React from 'react';
 import {View, Text, useWindowDimensions, StyleSheet} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-// Components
 import CommunityFeed from './CommunityFeed';
 import CommunityMy from './CommunityMy';
 import CommunityMain from './CommunityMain';
 
-// Style
 const fontStyles = (size?: number, weight?: any) =>
   StyleSheet.create({
     buttonText: {
@@ -16,10 +14,9 @@ const fontStyles = (size?: number, weight?: any) =>
     },
   });
 
-// Tab-View
-const FirstRoute = () => <CommunityFeed />;
+const FirstRoute = () => <CommunityMain />;
 const SecondRoute = () => <CommunityMy />;
-const ThirdRoute = () => <CommunityMain />;
+const ThirdRoute = () => <CommunityFeed />;
 
 const renderScene = SceneMap({
   main: FirstRoute,

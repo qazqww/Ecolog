@@ -1,28 +1,54 @@
 import React from 'react';
-import {ScrollView, Image, StyleSheet} from 'react-native';
+import {Text, View, ScrollView, Image, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   contentContainer: {
     width: '100%',
-    minHeight: '80%',
+    minHeight: '100%',
     backgroundColor: '#FFFFFF',
+    padding: 20,
   },
   img: {
     width: '100%',
     aspectRatio: 0.75,
   },
+  campaign: {
+    width: '25%',
+    height: '10%',
+    backgroundColor: 'grey',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  scrollView: {
+    width: '100%',
+  },
 });
 
 function CommunityMain() {
   return (
-    <ScrollView style={styles.contentContainer}>
-      <Image
-        style={styles.img}
-        source={{
-          uri: 'https://assetstorev1-prd-cdn.unity3d.com/package-screenshot/dc5b26e4-d16a-4deb-8c88-8e4caeddd900.webp',
-        }}
-      />
-    </ScrollView>
+    <View style={styles.contentContainer}>
+      <Text>인기 캠페인</Text>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollView}>
+        <View style={styles.campaign}>
+          <Text>sdfsdf</Text>
+        </View>
+        <View style={styles.campaign}>
+          <Text>sdfsdf</Text>
+        </View>
+        <View style={styles.campaign}>
+          <Text>sdfsdf</Text>
+        </View>
+        <View style={styles.campaign}>
+          <Text>sdfsdf</Text>
+        </View>
+      </ScrollView>
+      <Text>인기 커뮤니티</Text>
+      <Text>내 커뮤니티</Text>
+    </View>
   );
 }
 

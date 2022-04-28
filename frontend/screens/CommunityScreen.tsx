@@ -8,13 +8,14 @@ const styles = StyleSheet.create({
   },
   topMenu: {
     width: '100%',
+    height: '10%',
     color: '#ffffff',
-    padding: 20,
+    padding: 10,
   },
   topInput: {
     backgroundColor: 'white',
     width: '100%',
-    borderRadius: 5,
+    height: '50%',
   },
   topTitle: {
     color: '#ffffff',
