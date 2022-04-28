@@ -47,4 +47,9 @@ public class UserServiceImpl implements UserService{
     public User getUserByUserNo(Long userNo) {
         return userRepository.findByNo(userNo).orElse(null);
     }
+
+    @Override
+    public void deleteUser(User user) throws Exception {
+        userRepository.delete(user);
+    }
 }

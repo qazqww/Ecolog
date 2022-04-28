@@ -11,4 +11,6 @@ public interface UserService {
     User createUser(LoginReqDto loginDto);
 
     User getUserByUserNo(Long userNo);
+
+    void deleteUser(User user) throws Exception;
 }

@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(value = "사용자 정보 관련 API", tags = {"User"})
 @Slf4j
@@ -27,7 +28,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping({"", "/", "/{userNo}"})
-    @ApiOperation(value = "회원 정보 / ")
+    @ApiOperation(value = "회원 정보 ")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "Not Found"),
@@ -46,5 +47,25 @@ public class UserController {
 
 
         return ResponseEntity.ok(user != null ? UserInfoResDto.of(user) : null);
+    }
+
+    @DeleteMapping
+    @ApiOperation(value = "회원 탈퇴")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<String> delete(Authentication authentication) {
+
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+
+        try {
+            userService.deleteUser(user);
+        }catch (Exception e){
+            return ResponseEntity.ok("Failed");
+        }
+        return ResponseEntity.ok("Success");
     }
 }
