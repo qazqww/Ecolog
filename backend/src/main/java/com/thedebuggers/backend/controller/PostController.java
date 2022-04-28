@@ -30,8 +30,10 @@ public class PostController {
     private ResponseEntity<Boolean> registPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
                                                @ApiParam("communityNo, createdAt은 사용되지 않음.") @RequestBody PostDto postDto) {
         postDto.setCommunityNo(communityNo);
-        boolean result = postService.registPost(postDto);
-        return ResponseEntity.ok(result);
+        if (!postService.registPost(postDto)) {
+           return ResponseEntity.status(404).body(false);
+        }
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping
@@ -50,6 +52,9 @@ public class PostController {
         else {
             postList = postService.getPostList(communityNo);
         }
+        if (postList == null) {
+            return ResponseEntity.status(404).body(null);
+        }
         return ResponseEntity.ok(postList);
     }
 
@@ -63,6 +68,9 @@ public class PostController {
     private ResponseEntity<Post> getPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
                                          @ApiParam(defaultValue = "1") @PathVariable long postNo) {
         Post post = postService.getPost(postNo);
+        if (post == null) {
+            return ResponseEntity.status(404).body(null);
+        }
         return ResponseEntity.ok(post);
     }
 
@@ -75,7 +83,9 @@ public class PostController {
     })
     private ResponseEntity<Boolean> modifyPost(@PathVariable long postNo,
                                             @ApiParam("title, content, image, open 사용") @RequestBody PostDto postDto) {
-        postService.modifyPost(postNo, postDto);
+        if (!postService.modifyPost(postNo, postDto)) {
+            return ResponseEntity.status(404).body(false);
+        }
         return ResponseEntity.ok(true);
     }
 
@@ -87,7 +97,9 @@ public class PostController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     private ResponseEntity<Boolean> deletePost(@PathVariable long postNo) {
-        postService.deletePost(postNo);
+        if (!postService.deletePost(postNo)) {
+            return ResponseEntity.status(404).body(false);
+        }
         return ResponseEntity.ok(true);
     }
 }

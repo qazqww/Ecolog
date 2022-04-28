@@ -14,8 +14,7 @@ public interface PostService {
 
     Post getPost(long postNo);
 
-    void modifyPost(long postNo, PostDto postDto);
+    boolean modifyPost(long postNo, PostDto postDto);
 
-    void deletePost(long postNo);
-
+    boolean deletePost(long postNo);
 }
