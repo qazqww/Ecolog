@@ -56,7 +56,7 @@ public class PostController {
             postList = postService.getPostList(communityNo);
         }
         if (postList == null) {
-            return ResponseEntity.status(404).body(null);
+            throw new NullPointerException("게시물 목록");
         }
         return ResponseEntity.ok(postList);
     }
