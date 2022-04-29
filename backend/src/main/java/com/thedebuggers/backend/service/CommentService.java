@@ -12,4 +12,7 @@ public interface CommentService {
     void registComment(long postNo, User user, CommentReqDto commentDto) throws Exception;
 
     Comment getCommentByNo(long commentNo);
+
+    void updateComment(long commentNo, CommentReqDto commentDto, User user)throws Exception;
+
 }

@@ -41,4 +41,19 @@ public class CommentServiceImpl implements CommentService{
     public Comment getCommentByNo(long commentNo) {
         return commentRepository.findByNo(commentNo).orElse(null);
     }
+
+    @Override
+    public void updateComment(long commentNo, CommentReqDto commentDto, User user) throws Exception {
+
+
+        Comment comment = commentRepository.findByNo(commentNo).orElse(null);
+
+        if (comment == null) throw new Exception();
+
+        if (comment.getUser().getNo() != user.getNo()) throw new Exception();
+
+        comment.setContent(commentDto.getContent());
+
+        commentRepository.save(comment);
+    }
 }

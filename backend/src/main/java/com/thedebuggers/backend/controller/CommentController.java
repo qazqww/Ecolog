@@ -36,7 +36,7 @@ public class CommentController {
     }
 
     @PostMapping
-    @ApiOperation(value = "댓글 목록 조회")
+    @ApiOperation(value = "댓글 등록")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 404, message = "Not Found"),
@@ -70,4 +70,23 @@ public class CommentController {
         }
         return ResponseEntity.ok("Success");
     }
+    @PutMapping("/{commentNo}")
+    @ApiOperation(value = "댓글 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<String> updateComment(@ApiParam(defaultValue = "1") @PathVariable long commentNo, @RequestBody CommentReqDto commentDto, Authentication authentication) {
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+
+        try {
+            commentService.updateComment(commentNo, commentDto, user);
+        }catch (Exception e){
+            return ResponseEntity.ok("Failed");
+        }
+        return ResponseEntity.ok("Success");
+    }
+
 }
