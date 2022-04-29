@@ -36,4 +36,9 @@ public class CommentServiceImpl implements CommentService{
 
         commentRepository.save(comment);
     }
+
+    @Override
+    public Comment getCommentByNo(long commentNo) {
+        return commentRepository.findByNo(commentNo).orElse(null);
+    }
 }

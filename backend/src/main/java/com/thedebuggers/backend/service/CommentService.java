@@ -10,4 +10,6 @@ public interface CommentService {
     List<Comment> getCommentList(long postNo);
 
     void registComment(long postNo, User user, CommentReqDto commentDto) throws Exception;
+
+    Comment getCommentByNo(long commentNo);
 }

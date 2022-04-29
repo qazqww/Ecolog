@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "댓글 관련 API", tags = "comment")
+@Api(value = "댓글 관련 API", tags = "Comment")
 @Slf4j
 @RequestMapping("/api/v1/community/{communityNo}/post/{postNo}/comment")
 @RequiredArgsConstructor
@@ -48,6 +48,23 @@ public class CommentController {
 
         try {
             commentService.registComment(postNo, user, commentDto);
+        }catch (Exception e){
+            return ResponseEntity.ok("Failed");
+        }
+        return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/{commentNo}")
+    @ApiOperation(value = "댓글 상세 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<String> getCommentDetail(@ApiParam(defaultValue = "1") @PathVariable long commentNo) {
+        Comment comment = null;
+        try {
+            comment = commentService.getCommentByNo(commentNo);
         }catch (Exception e){
             return ResponseEntity.ok("Failed");
         }
