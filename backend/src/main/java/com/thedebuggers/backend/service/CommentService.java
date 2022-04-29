@@ -15,4 +15,5 @@ public interface CommentService {
 
     void updateComment(long commentNo, CommentReqDto commentDto, User user)throws Exception;
 
+    void deleteComment(long commentNo, User user) throws Exception;
 }

@@ -88,5 +88,22 @@ public class CommentController {
         }
         return ResponseEntity.ok("Success");
     }
+    @DeleteMapping("/{commentNo}")
+    @ApiOperation(value = "댓글 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<String> deleteComment(@ApiParam(defaultValue = "1") @PathVariable long commentNo, Authentication authentication) {
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
 
+        try {
+            commentService.deleteComment(commentNo,user);
+        }catch (Exception e){
+            return ResponseEntity.ok("Failed");
+        }
+        return ResponseEntity.ok("Success");
+    }
 }

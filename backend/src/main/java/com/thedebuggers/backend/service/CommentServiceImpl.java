@@ -45,7 +45,6 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public void updateComment(long commentNo, CommentReqDto commentDto, User user) throws Exception {
 
-
         Comment comment = commentRepository.findByNo(commentNo).orElse(null);
 
         if (comment == null) throw new Exception();
@@ -55,5 +54,17 @@ public class CommentServiceImpl implements CommentService{
         comment.setContent(commentDto.getContent());
 
         commentRepository.save(comment);
+    }
+
+    @Override
+    public void deleteComment(long commentNo, User user) throws Exception {
+
+        Comment comment = commentRepository.findByNo(commentNo).orElse(null);
+
+        if (comment == null) throw new Exception();
+
+        if (comment.getUser().getNo() != user.getNo()) throw new Exception();
+
+        commentRepository.delete(comment);
     }
 }
