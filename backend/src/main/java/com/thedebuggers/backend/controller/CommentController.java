@@ -4,6 +4,7 @@ import com.thedebuggers.backend.auth.ELUserDetails;
 import com.thedebuggers.backend.domain.entity.Comment;
 import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.dto.CommentReqDto;
+import com.thedebuggers.backend.dto.CommentResDto;
 import com.thedebuggers.backend.service.CommentService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(value = "댓글 관련 API", tags = "Comment")
 @Slf4j
@@ -30,9 +32,11 @@ public class CommentController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<List<Comment>> getCommentList(@ApiParam(defaultValue = "1") @PathVariable long postNo) {
+    private ResponseEntity<List<CommentResDto>> getCommentList(@ApiParam(defaultValue = "1") @PathVariable long postNo) {
         List<Comment> commentList = commentService.getCommentList(postNo);
-        return ResponseEntity.ok(commentList);
+
+        List<CommentResDto> result = commentList.stream().map(CommentResDto::of).collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping
@@ -61,14 +65,14 @@ public class CommentController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<String> getCommentDetail(@ApiParam(defaultValue = "1") @PathVariable long commentNo) {
+    private ResponseEntity<?> getCommentDetail(@ApiParam(defaultValue = "1") @PathVariable long commentNo) {
         Comment comment = null;
         try {
             comment = commentService.getCommentByNo(commentNo);
         }catch (Exception e){
             return ResponseEntity.ok("Failed");
         }
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok(CommentResDto.of(comment));
     }
     @PutMapping("/{commentNo}")
     @ApiOperation(value = "댓글 수정")
