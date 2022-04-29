@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, TextInput, View, StyleSheet} from 'react-native';
-import CommunityTab from '../components/User/Community/CommunityTab';
+import CommunityTab from '../components/Community/CommunityTab';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
