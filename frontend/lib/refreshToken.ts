@@ -15,8 +15,8 @@ const refresh = async (
       const {exp} = jwtDecode<JwtPayload>(jwtToken);
       if (exp && Date.now() >= exp * 1000) {
         try {
-          const response = await authApi.get('/auth/reissue', {
-            headers: {RefreshToken: `Bearer ${refreshToken}`},
+          const response = await authApi.post('/auth/reissue', {
+            refresh_token: `Bearer ${refreshToken}`,
           });
           const newJwtToken = response.headers.authorization.split(' ')[1];
           AsyncStorage.setItem('jwtToken', newJwtToken);
