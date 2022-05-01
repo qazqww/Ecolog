@@ -36,12 +36,12 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
     @Override
-    public boolean registCommunity(CommunityDto communityDto) {
+    public Community registCommunity(CommunityDto communityDto, long userNo) {
         Community community = Community.builder()
                 .title(communityDto.getTitle())
                 .description(communityDto.getDescription())
                 .image(communityDto.getImage())
-                .manager(userRepository.findByNo(communityDto.getUserNo()).orElse(null))
+                .manager(userRepository.findByNo(userNo).orElse(null))
                 .sido(communityDto.getSido())
                 .sigungu(communityDto.getSigungu())
                 .tag(communityDto.getTag())
@@ -50,13 +50,13 @@ public class CommunityServiceImpl implements CommunityService{
         community = communityRepository.save(community);
 
         UserCommunity userCommunity = UserCommunity.builder()
-                .user(userRepository.findByNo(communityDto.getUserNo()).orElse(null))
+                .user(userRepository.findByNo(userNo).orElse(null))
                 .community(community)
                 .build();
 
         userCommunity = userCommunityRepository.save(userCommunity);
 
-        return true;
+        return community;
     }
 
     @Override
