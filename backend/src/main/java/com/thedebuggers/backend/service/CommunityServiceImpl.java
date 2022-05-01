@@ -42,6 +42,9 @@ public class CommunityServiceImpl implements CommunityService{
                 .description(communityDto.getDescription())
                 .image(communityDto.getImage())
                 .manager(userRepository.findByNo(communityDto.getUserNo()).orElse(null))
+                .sido(communityDto.getSido())
+                .sigungu(communityDto.getSigungu())
+                .tag(communityDto.getTag())
                 .build();
 
         community = communityRepository.save(community);
@@ -86,6 +89,9 @@ public class CommunityServiceImpl implements CommunityService{
                     .description(communityDto.getDescription())
                     .image(communityDto.getImage())
                     .manager(userRepository.findByNo(communityDto.getUserNo()).orElse(null))
+                    .sido(communityDto.getSido())
+                    .sigungu(communityDto.getSigungu())
+                    .tag(communityDto.getTag())
                     .build();
             communityRepository.updateCommunity(communityNo, community);
             return community;
