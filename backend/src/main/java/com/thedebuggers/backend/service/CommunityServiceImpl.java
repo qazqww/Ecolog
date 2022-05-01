@@ -78,5 +78,60 @@ public class CommunityServiceImpl implements CommunityService{
         return userList;
     }
 
+    @Override
+    public Community updateCommunity(long communityNo, User user, CommunityDto communityDto) {
+        try {
+            Community community = Community.builder()
+                    .title(communityDto.getTitle())
+                    .description(communityDto.getDescription())
+                    .image(communityDto.getImage())
+                    .manager(userRepository.findByNo(communityDto.getUserNo()).orElse(null))
+                    .build();
+            communityRepository.updateCommunity(communityNo, community);
+            return community;
+        } catch (Exception e) {
+            System.out.print(e);
+            return null;
+        }
+    }
+
+    @Override
+    public void deleteCommunity(long communityNo, User user) throws Exception {
+
+        Community community = communityRepository.findByNo(communityNo);
+        List<UserCommunity> userCommunityList = userCommunityRepository.findAllByCommunityNo(communityNo);
+
+        if (community == null) {
+            System.out.println("1번 에러");
+            throw new Exception();
+        }
+
+        if (community.getManager().getNo() != user.getNo()) {
+            System.out.println("2번 에러");
+            throw new Exception();
+        }
+
+        userCommunityRepository.deleteAll(userCommunityList);
+        communityRepository.delete(community);
+
+    }
+
+    @Override
+    public void quitCommunity(long communityNo, long userNo) throws Exception {
+        UserCommunity userCommunity = userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, userNo);
+
+        Community community = communityRepository.findByNo(communityNo);
+
+        if (userCommunity == null) {
+            throw new Exception();
+        }
+
+        if (community.getManager().getNo() == userNo) {
+            throw new Exception();
+        }
+
+        userCommunityRepository.delete(userCommunity);
+    }
+
 
 }

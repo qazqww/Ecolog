@@ -1,23 +1,18 @@
 package com.thedebuggers.backend.dto;
 
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.thedebuggers.backend.domain.entity.LoginType;
 import io.swagger.annotations.ApiModel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
-@ApiModel("LoginResponse")
+@AllArgsConstructor
+@RequiredArgsConstructor
+@ApiModel("ImageUploadResponse")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class LoginReqDto {
-
-    private long id;
-    private String email;
-    private String name;
-    private LoginType loginType;
-
+public class ImageUploadResDto {
+    private String imageUrl;
 }
