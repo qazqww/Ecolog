@@ -2,7 +2,9 @@ package com.thedebuggers.backend.controller;
 
 import com.thedebuggers.backend.auth.ELUserDetails;
 import com.thedebuggers.backend.domain.entity.Post;
-import com.thedebuggers.backend.dto.PostDto;
+import com.thedebuggers.backend.domain.entity.User;
+import com.thedebuggers.backend.dto.PostReqDto;
+import com.thedebuggers.backend.dto.PostResDto;
 import com.thedebuggers.backend.service.PostService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(value = "커뮤니티 게시물 관련 API", tags = "Post")
 @Slf4j
@@ -30,13 +33,10 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Boolean> registPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
-                                               @ApiParam("communityNo, createdAt은 사용되지 않음.") @RequestBody PostDto postDto) throws Exception {
-        postDto.setCommunityNo(communityNo);
-        if (!postService.registPost(postDto)) {
-           throw new Exception("게시물 등록에 실패하였습니다.");
-        }
-        return ResponseEntity.ok(true);
+    private ResponseEntity<PostResDto> registPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
+                                                  @RequestBody PostReqDto postReqDto) {
+        Post post = postService.registPost(postReqDto, communityNo);
+        return ResponseEntity.ok(PostResDto.of(post));
     }
 
     @GetMapping
@@ -46,17 +46,14 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<List<Post>> getPostList(
+    private ResponseEntity<List<PostResDto>> getPostList(
             @ApiParam(value = "0 : 전체 커뮤니티의 공개 게시물, 1~ : 해당 커뮤니티의 전체 게시물", defaultValue = "1") @PathVariable long communityNo) {
-        List<Post> postList;
+        List<PostResDto> postList;
         if (communityNo == 0) {
-            postList = postService.getAllPost();
+            postList = postService.getAllPost().stream().map(PostResDto::of).collect(Collectors.toList());
         }
         else {
-            postList = postService.getPostList(communityNo);
-        }
-        if (postList == null) {
-            throw new NullPointerException("없는 커뮤니티이거나 해당 커뮤니티에 게시물이 존재하지 않습니다.");
+            postList = postService.getPostList(communityNo).stream().map(PostResDto::of).collect(Collectors.toList());;
         }
         return ResponseEntity.ok(postList);
     }
@@ -68,13 +65,9 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Post> getPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
-                                         @ApiParam(defaultValue = "1") @PathVariable long postNo) {
+    private ResponseEntity<PostResDto> getPost(@ApiParam(defaultValue = "1") @PathVariable long postNo) {
         Post post = postService.getPost(postNo);
-        if (post == null) {
-            throw new NullPointerException("게시물이 존재하지 않습니다.");
-        }
-        return ResponseEntity.ok(post);
+        return ResponseEntity.ok(PostResDto.of(post));
     }
 
     @PutMapping("/{postNo}")
@@ -84,11 +77,8 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Boolean> modifyPost(@PathVariable long postNo,
-                                            @ApiParam("title, content, image, open 사용") @RequestBody PostDto postDto) {
-        if (!postService.modifyPost(postNo, postDto)) {
-            return ResponseEntity.status(404).body(false);
-        }
+    private ResponseEntity<Boolean> modifyPost(@PathVariable long postNo, @RequestBody PostReqDto postDto) {
+        postService.modifyPost(postNo, postDto);
         return ResponseEntity.ok(true);
     }
 

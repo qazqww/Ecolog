@@ -2,11 +2,12 @@ package com.thedebuggers.backend.service;
 
 import com.thedebuggers.backend.domain.entity.Post;
 import com.thedebuggers.backend.domain.entity.PostLike;
+import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.domain.repository.CommunityRepository;
 import com.thedebuggers.backend.domain.repository.PostLikeRepository;
 import com.thedebuggers.backend.domain.repository.PostRepository;
 import com.thedebuggers.backend.domain.repository.UserRepository;
-import com.thedebuggers.backend.dto.PostDto;
+import com.thedebuggers.backend.dto.PostReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,29 +25,29 @@ public class PostServiceImpl implements PostService {
     private final PostLikeRepository postLikeRepository;
 
     @Override
-    public boolean registPost(PostDto postDto) {
+    public Post registPost(PostReqDto postReqDto, long communityNo) {
         try {
             Post post = Post.builder()
-                    .title(postDto.getTitle())
-                    .content(postDto.getContent())
-                    .image(postDto.getImage())
+                    .title(postReqDto.getTitle())
+                    .content(postReqDto.getContent())
+                    .image(postReqDto.getImage())
                     .createdAt(LocalDateTime.now())
-                    .isOpen(postDto.isOpen())
-                    .community(communityRepository.findByNo(postDto.getCommunityNo()))
-                    .user(userRepository.findByNo(postDto.getUserNo()).orElse(null))
+                    .isOpen(postReqDto.isOpen())
+                    .community(communityRepository.findByNo(communityNo))
+                    .user(userRepository.findByNo(postReqDto.getUserNo()).orElse(null))
                     .build();
 
             post = postRepository.save(post);
-            return true;
+            return post;
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
 
     @Override
     public List<Post> getAllPost() {
         try {
-            return postRepository.findByIsOpen(true);
+            return postRepository.findOpenPosts();
         } catch (Exception e) {
             return null;
         }
@@ -55,7 +56,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getPostList(long communityNo) {
         try {
-            List<Post> postList = postRepository.findByCommunityNo(communityNo);
+            List<Post> postList = postRepository.findPostsByCommunity(communityNo);
             if (postList.size() == 0) {
                 return null;
             }
@@ -68,15 +69,27 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getPost(long postNo) {
         try {
-            return postRepository.findByNo(postNo);
+            return postRepository.findByNo(postNo).orElse(null);
         } catch (Exception e) {
             return null;
         }
     }
 
+//    @Override
+//    public Post getPost(User user, long communityNo, long postNo) {
+//        try {
+//            if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null) {
+//                // 커뮤니티 미가입으로 권한 없음
+//            }
+//            return postRepository.findByNo(postNo).orElse(null);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+
     @Override
     @Transactional
-    public boolean modifyPost(long postNo, PostDto postDto) {
+    public boolean modifyPost(long postNo, PostReqDto postDto) {
         try {
             Post post = Post.builder()
                     .title(postDto.getTitle())
@@ -106,7 +119,7 @@ public class PostServiceImpl implements PostService {
     public boolean likePost(long postNo, long userNo) {
         try {
             PostLike like = PostLike.builder()
-                    .post(postRepository.findByNo(postNo))
+                    .post(postRepository.findByNo(postNo).orElse(null))
                     .user(userRepository.findByNo(userNo).orElse(null))
                     .build();
 
