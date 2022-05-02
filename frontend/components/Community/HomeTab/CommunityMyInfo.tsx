@@ -7,13 +7,14 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#ffffff',
     padding: 20,
+    minHeight: '100%',
   },
 });
 
 function CommunityMyInfo() {
   return (
     <View style={styles.Container}>
-      <Text>홈</Text>
+      <Text>My Info</Text>
     </View>
   );
 }

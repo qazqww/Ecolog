@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   Container: {
     flexGrow: 0,
     width: '100%',
+    minHeight: '100%',
     backgroundColor: '#ffffff',
     padding: 20,
   },
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 function CommunityNotice() {
   return (
     <View style={styles.Container}>
-      <Text>홈</Text>
+      <Text>Notice</Text>
     </View>
   );
 }
