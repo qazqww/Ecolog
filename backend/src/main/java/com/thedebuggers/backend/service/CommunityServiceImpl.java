@@ -110,7 +110,7 @@ public class CommunityServiceImpl implements CommunityService{
     public void deleteCommunity(long communityNo, User user) throws Exception {
 
         Community community = communityRepository.findByNo(communityNo);
-        List<UserCommunity> userCommunityList = userCommunityRepository.findAllByCommunityNo(communityNo);
+//        List<UserCommunity> userCommunityList = userCommunityRepository.findAllByCommunityNo(communityNo);
 
         // 커뮤니티 게시글 조회 >> 삭제
         // 댓글 삭제
@@ -127,7 +127,7 @@ public class CommunityServiceImpl implements CommunityService{
             throw new Exception();
         }
 
-        userCommunityRepository.deleteAll(userCommunityList);
+//        userCommunityRepository.deleteAll(userCommunityList);
         communityRepository.delete(community);
 
     }
