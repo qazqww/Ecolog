@@ -24,4 +24,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     void updateLikeMinus(long postNo);
 
     List<Post> findAllByCommunityNoAndUserNo(long communityNo, long userNo);
+
+    List<Post> findAllByUserNoAndIsOpenTrue(long userNo);
 }

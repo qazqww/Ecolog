@@ -133,7 +133,7 @@ public class PostController {
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         long userNo = userDetails.getUser().getNo();
 
-        List<PostResDto> postList = postService.getMyPostList(communityNo, userNo).stream().map(PostResDto::of).collect(Collectors.toList());;
+        List<PostResDto> postList = postService.getMyPostListInCommunity(communityNo, userNo).stream().map(PostResDto::of).collect(Collectors.toList());;
 
         return ResponseEntity.ok(postList);
     }

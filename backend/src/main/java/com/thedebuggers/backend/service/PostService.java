@@ -14,7 +14,9 @@ public interface PostService {
 
     List<Post> getPostList(long communityNo);
 
-    List<Post> getMyPostList(long communityNo, long userNo);
+    List<Post> getMyPostList(long userNo);
+
+    List<Post> getMyPostListInCommunity(long communityNo, long userNo);
 
     Post getPost(long postNo);
 
