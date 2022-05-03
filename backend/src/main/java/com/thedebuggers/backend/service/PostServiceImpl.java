@@ -1,12 +1,12 @@
 package com.thedebuggers.backend.service;
 
+import com.thedebuggers.backend.common.exception.CustomException;
+import com.thedebuggers.backend.common.util.ErrorCode;
 import com.thedebuggers.backend.domain.entity.Post;
 import com.thedebuggers.backend.domain.entity.PostLike;
 import com.thedebuggers.backend.domain.entity.User;
-import com.thedebuggers.backend.domain.repository.CommunityRepository;
-import com.thedebuggers.backend.domain.repository.PostLikeRepository;
-import com.thedebuggers.backend.domain.repository.PostRepository;
-import com.thedebuggers.backend.domain.repository.UserRepository;
+import com.thedebuggers.backend.domain.entity.UserCommunity;
+import com.thedebuggers.backend.domain.repository.*;
 import com.thedebuggers.backend.dto.PostReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,40 +23,37 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final CommunityRepository communityRepository;
     private final PostLikeRepository postLikeRepository;
+    private final UserCommunityRepository userCommunityRepository;
 
     @Override
-    public Post registPost(PostReqDto postReqDto, long communityNo) {
-        try {
-            Post post = Post.builder()
-                    .title(postReqDto.getTitle())
-                    .content(postReqDto.getContent())
-                    .image(postReqDto.getImage())
-                    .createdAt(LocalDateTime.now())
-                    .isOpen(postReqDto.isOpen())
-                    .community(communityRepository.findByNo(communityNo))
-                    .user(userRepository.findByNo(postReqDto.getUserNo()).orElse(null))
-                    .build();
-
-            post = postRepository.save(post);
-            return post;
-        } catch (Exception e) {
-            return null;
+    public Post registPost(User user, PostReqDto postReqDto, long communityNo) {
+        if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null) {
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+
+        Post post = Post.builder()
+                .title(postReqDto.getTitle())
+                .content(postReqDto.getContent())
+                .image(postReqDto.getImage())
+                .createdAt(LocalDateTime.now())
+                .isOpen(postReqDto.isOpen())
+                .community(communityRepository.findByNo(communityNo))
+                .user(user)
+                .build();
+
+        post = postRepository.save(post);
+        return post;
     }
 
     @Override
     public List<Post> getAllPost() {
-        try {
-            return postRepository.findOpenPosts();
-        } catch (Exception e) {
-            return null;
-        }
+        return postRepository.findAllByIsOpenTrue();
     }
 
     @Override
     public List<Post> getPostList(long communityNo) {
         try {
-            List<Post> postList = postRepository.findPostsByCommunity(communityNo);
+            List<Post> postList = postRepository.findAllByCommunityNo(communityNo);
             if (postList.size() == 0) {
                 return null;
             }
@@ -75,30 +72,34 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-//    @Override
-//    public Post getPost(User user, long communityNo, long postNo) {
-//        try {
-//            if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null) {
-//                // 커뮤니티 미가입으로 권한 없음
-//            }
-//            return postRepository.findByNo(postNo).orElse(null);
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
+    @Override
+    public Post getPost(User user, long postNo) {
+        Post post = postRepository.findByNo(postNo).orElse(null);
+        if (!post.isOpen() && userCommunityRepository.findAllByCommunityNoAndUserNo(post.getCommunity().getNo(), user.getNo()) == null) {
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+        return post;
+    }
 
     @Override
-    @Transactional
-    public boolean modifyPost(long postNo, PostReqDto postDto) {
+    public boolean modifyPost(User user, long postNo, PostReqDto postDto) {
         try {
-            Post post = Post.builder()
-                    .title(postDto.getTitle())
-                    .content(postDto.getContent())
-                    .image(postDto.getImage())
-                    .isOpen(postDto.isOpen())
-                    .build();
+            Post post = postRepository.findByNo(postNo).orElse(null);
+            if (user.getNo() != post.getUser().getNo())
+                throw new RuntimeException();
 
-            postRepository.modifyPost(postNo, post);
+            if (postDto.getTitle() != null)
+                post.setTitle(postDto.getTitle());
+
+            if (postDto.getContent() != null)
+                post.setContent(postDto.getContent());
+
+            if (postDto.getImage() != null)
+                post.setImage(postDto.getImage());
+
+            post.setOpen(postDto.isOpen());
+
+            postRepository.save(post);
             return true;
         } catch (Exception e) {
             return false;
@@ -106,8 +107,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean deletePost(long postNo) {
+    public boolean deletePost(User user, long postNo) {
         try {
+            Post post = postRepository.findByNo(postNo).orElse(null);
+            if (user.getNo() != post.getUser().getNo())
+                throw new RuntimeException();
+
             postRepository.deleteById(postNo);
             return true;
         } catch (Exception e) {
@@ -127,9 +132,11 @@ public class PostServiceImpl implements PostService {
 
             if (existLike == null) {
                 postLikeRepository.save(like);
+                postRepository.updateLikePlus(postNo);
             }
             else {
                 long existNo = existLike.getNo();
+                postRepository.updateLikeMinus(postNo);
                 postLikeRepository.deleteById(existNo);
             }
             return true;

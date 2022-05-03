@@ -7,7 +7,7 @@ import com.thedebuggers.backend.dto.PostReqDto;
 import java.util.List;
 
 public interface PostService {
-    Post registPost(PostReqDto postReqDto, long communityNo);
+    Post registPost(User user, PostReqDto postReqDto, long communityNo);
 
     List<Post> getAllPost();
 
@@ -15,9 +15,11 @@ public interface PostService {
 
     Post getPost(long postNo);
 
-    boolean modifyPost(long postNo, PostReqDto postDto);
+    Post getPost(User user, long postNo) throws Exception;
 
-    boolean deletePost(long postNo);
+    boolean modifyPost(User user, long postNo, PostReqDto postDto);
+
+    boolean deletePost(User user, long postNo);
 
     boolean likePost(long postNo, long userNo);
 }

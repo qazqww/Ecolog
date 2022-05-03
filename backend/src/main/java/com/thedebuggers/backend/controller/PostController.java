@@ -33,9 +33,12 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<PostResDto> registPost(@ApiParam(defaultValue = "1") @PathVariable long communityNo,
+    private ResponseEntity<PostResDto> registPost(@ApiIgnore Authentication authentication,
+                                                  @ApiParam(defaultValue = "1") @PathVariable long communityNo,
                                                   @RequestBody PostReqDto postReqDto) {
-        Post post = postService.registPost(postReqDto, communityNo);
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+        Post post = postService.registPost(user, postReqDto, communityNo);
         return ResponseEntity.ok(PostResDto.of(post));
     }
 
@@ -65,8 +68,12 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<PostResDto> getPost(@ApiParam(defaultValue = "1") @PathVariable long postNo) {
-        Post post = postService.getPost(postNo);
+    private ResponseEntity<PostResDto> getPost(@ApiIgnore Authentication authentication,
+                                               @ApiParam(defaultValue = "1") @PathVariable long postNo) throws Exception {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+        Post post = postService.getPost(user, postNo);
+        System.out.println("hey");
         return ResponseEntity.ok(PostResDto.of(post));
     }
 
@@ -77,8 +84,10 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Boolean> modifyPost(@PathVariable long postNo, @RequestBody PostReqDto postDto) {
-        postService.modifyPost(postNo, postDto);
+    private ResponseEntity<Boolean> modifyPost(@ApiIgnore Authentication authentication, @PathVariable long postNo, @RequestBody PostReqDto postDto) {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+        postService.modifyPost(user, postNo, postDto);
         return ResponseEntity.ok(true);
     }
 
@@ -89,8 +98,10 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Boolean> deletePost(@PathVariable long postNo) {
-        if (!postService.deletePost(postNo)) {
+    private ResponseEntity<Boolean> deletePost(@ApiIgnore Authentication authentication, @PathVariable long postNo) {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+        if (!postService.deletePost(user, postNo)) {
             return ResponseEntity.status(404).body(false);
         }
         return ResponseEntity.ok(true);

@@ -12,5 +12,4 @@ public class PostReqDto {
     private String content;
     private String image;
     private boolean isOpen;
-    private long userNo;
 }

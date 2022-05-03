@@ -2,9 +2,13 @@ package com.thedebuggers.backend.dto;
 
 import com.thedebuggers.backend.domain.entity.Post;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Builder
 public class PostResDto {
     private long no;
