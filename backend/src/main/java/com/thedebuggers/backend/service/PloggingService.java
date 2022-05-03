@@ -1,9 +1,15 @@
 package com.thedebuggers.backend.service;
 
-import com.thedebuggers.backend.domain.entity.Plogging;
 import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.dto.PloggingReqDto;
+import com.thedebuggers.backend.dto.PloggingResDto;
+
+import java.util.List;
 
 public interface PloggingService {
-    Plogging registPlogging(User user, PloggingReqDto ploggingReqDto);
+    PloggingResDto registPlogging(User user, PloggingReqDto ploggingReqDto);
+
+    List<PloggingResDto> getPloggingList(long userNo);
+
+    PloggingResDto getPlogging(long ploggingNo);
 }
