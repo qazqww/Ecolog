@@ -6,7 +6,9 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -49,11 +51,14 @@ public class Community {
     @Column(name = "tag")
     private String tag;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "USER_COMMUNITY",
-        joinColumns = @JoinColumn(name = "community_no"),
-        inverseJoinColumns = @JoinColumn(name = "user_no")
-    )
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinTable(name = "USER_COMMUNITY",
+//        joinColumns = @JoinColumn(name = "community_no"),
+//        inverseJoinColumns = @JoinColumn(name = "user_no")
+//    )
+//    private Set<User> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "community")
+    private List<UserCommunity> communityList = new ArrayList<>();
 
 }
