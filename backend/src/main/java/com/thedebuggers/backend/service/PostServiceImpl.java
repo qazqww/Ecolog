@@ -59,6 +59,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getMyPostList(long communityNo, long userNo) {
+        return postRepository.findAllByCommunityNoAndUserNo(communityNo, userNo);
+    }
+
+    @Override
     public Post getPost(long postNo) {
         return postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
     }

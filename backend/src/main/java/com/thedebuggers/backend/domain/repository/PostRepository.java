@@ -22,4 +22,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Modifying
     @Query("update Post p set p.likeCount = p.likeCount - 1 where p.no = :postNo")
     void updateLikeMinus(long postNo);
+
+    List<Post> findAllByCommunityNoAndUserNo(long communityNo, long userNo);
 }
