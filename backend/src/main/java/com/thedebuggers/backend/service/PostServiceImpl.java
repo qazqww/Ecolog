@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post registPost(User user, PostReqDto postReqDto, long communityNo) {
         if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
         }
 
         Post post = Post.builder()
@@ -52,31 +52,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostList(long communityNo) {
-        try {
-            List<Post> postList = postRepository.findAllByCommunityNo(communityNo);
-            if (postList.size() == 0) {
-                return null;
-            }
-            return postList;
-        } catch (Exception e) {
-            return null;
-        }
+        List<Post> postList = postRepository.findAllByCommunityNo(communityNo);
+        return postList;
     }
 
     @Override
     public Post getPost(long postNo) {
-        try {
-            return postRepository.findByNo(postNo).orElse(null);
-        } catch (Exception e) {
-            return null;
-        }
+        return postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
     }
 
     @Override
     public Post getPost(User user, long postNo) {
-        Post post = postRepository.findByNo(postNo).orElse(null);
+        Post post = postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
         if (!post.isOpen() && userCommunityRepository.findAllByCommunityNoAndUserNo(post.getCommunity().getNo(), user.getNo()) == null) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
         }
         return post;
     }
@@ -85,7 +74,7 @@ public class PostServiceImpl implements PostService {
     public boolean modifyPost(User user, long postNo, PostReqDto postDto) {
         Post post = postRepository.findByNo(postNo).orElse(null);
         if (user.getNo() != post.getUser().getNo())
-            throw new RuntimeException();
+            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
 
         if (postDto.getTitle() != null)
             post.setTitle(postDto.getTitle());
@@ -106,7 +95,7 @@ public class PostServiceImpl implements PostService {
     public boolean deletePost(User user, long postNo) {
         Post post = postRepository.findByNo(postNo).orElse(null);
         if (user.getNo() != post.getUser().getNo())
-            throw new RuntimeException();
+            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
 
         postRepository.deleteById(postNo);
         return true;

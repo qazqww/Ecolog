@@ -87,8 +87,8 @@ public class PostController {
     private ResponseEntity<Boolean> modifyPost(@ApiIgnore Authentication authentication, @PathVariable long postNo, @RequestBody PostReqDto postDto) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
-        postService.modifyPost(user, postNo, postDto);
-        return ResponseEntity.ok(true);
+        boolean result = postService.modifyPost(user, postNo, postDto);
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{postNo}")
@@ -101,10 +101,8 @@ public class PostController {
     private ResponseEntity<Boolean> deletePost(@ApiIgnore Authentication authentication, @PathVariable long postNo) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
-        if (!postService.deletePost(user, postNo)) {
-            return ResponseEntity.status(404).body(false);
-        }
-        return ResponseEntity.ok(true);
+        boolean result = postService.deletePost(user, postNo);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/{postNo}/like")
@@ -118,10 +116,8 @@ public class PostController {
                                              @PathVariable long postNo) {
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         long userNo = userDetails.getUser().getNo();
-        if (!postService.likePost(postNo, userNo)) {
-            return ResponseEntity.status(404).body(false);
-        }
-        return ResponseEntity.ok(true);
+        boolean result = postService.likePost(postNo, userNo);
+        return ResponseEntity.ok(result);
     }
 }
 
