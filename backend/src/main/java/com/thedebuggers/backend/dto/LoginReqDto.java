@@ -15,7 +15,6 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class LoginReqDto {
 
-    private long id;
     private String email;
     private String name;
     private LoginType loginType;
