@@ -52,12 +52,12 @@ public class PostController {
     private ResponseEntity<List<PostResDto>> getPostList(
             @ApiParam(value = "0 : 전체 커뮤니티의 공개 게시물, 1~ : 해당 커뮤니티의 전체 게시물", defaultValue = "1") @PathVariable long communityNo) {
         List<PostResDto> postList;
-        if (communityNo == 0) {
+
+        if (communityNo == 0)
             postList = postService.getAllPost().stream().map(PostResDto::of).collect(Collectors.toList());
-        }
-        else {
+        else
             postList = postService.getPostList(communityNo).stream().map(PostResDto::of).collect(Collectors.toList());;
-        }
+
         return ResponseEntity.ok(postList);
     }
 
@@ -73,7 +73,6 @@ public class PostController {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
         Post post = postService.getPost(user, postNo);
-        System.out.println("hey");
         return ResponseEntity.ok(PostResDto.of(post));
     }
 
@@ -84,7 +83,8 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Boolean> modifyPost(@ApiIgnore Authentication authentication, @PathVariable long postNo, @RequestBody PostReqDto postDto) {
+    private ResponseEntity<Boolean> modifyPost(@ApiIgnore Authentication authentication,
+                                               @PathVariable long postNo, @RequestBody PostReqDto postDto) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
         boolean result = postService.modifyPost(user, postNo, postDto);
@@ -98,7 +98,8 @@ public class PostController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<Boolean> deletePost(@ApiIgnore Authentication authentication, @PathVariable long postNo) {
+    private ResponseEntity<Boolean> deletePost(@ApiIgnore Authentication authentication,
+                                               @PathVariable long postNo) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
         boolean result = postService.deletePost(user, postNo);

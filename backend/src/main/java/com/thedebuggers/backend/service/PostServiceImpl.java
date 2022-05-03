@@ -27,9 +27,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post registPost(User user, PostReqDto postReqDto, long communityNo) {
-        if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null) {
+        if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null)
             throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
-        }
+
+        if (postReqDto.getTitle() == null || postReqDto.getContent() == null)
+            throw new CustomException(ErrorCode.CONTENT_NOT_FILLED);
 
         Post post = Post.builder()
                 .title(postReqDto.getTitle())
