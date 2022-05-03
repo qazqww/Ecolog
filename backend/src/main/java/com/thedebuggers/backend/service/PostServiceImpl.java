@@ -83,66 +83,54 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean modifyPost(User user, long postNo, PostReqDto postDto) {
-        try {
-            Post post = postRepository.findByNo(postNo).orElse(null);
-            if (user.getNo() != post.getUser().getNo())
-                throw new RuntimeException();
+        Post post = postRepository.findByNo(postNo).orElse(null);
+        if (user.getNo() != post.getUser().getNo())
+            throw new RuntimeException();
 
-            if (postDto.getTitle() != null)
-                post.setTitle(postDto.getTitle());
+        if (postDto.getTitle() != null)
+            post.setTitle(postDto.getTitle());
 
-            if (postDto.getContent() != null)
-                post.setContent(postDto.getContent());
+        if (postDto.getContent() != null)
+            post.setContent(postDto.getContent());
 
-            if (postDto.getImage() != null)
-                post.setImage(postDto.getImage());
+        if (postDto.getImage() != null)
+            post.setImage(postDto.getImage());
 
-            post.setOpen(postDto.isOpen());
+        post.setOpen(postDto.isOpen());
 
-            postRepository.save(post);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        postRepository.save(post);
+        return true;
     }
 
     @Override
     public boolean deletePost(User user, long postNo) {
-        try {
-            Post post = postRepository.findByNo(postNo).orElse(null);
-            if (user.getNo() != post.getUser().getNo())
-                throw new RuntimeException();
+        Post post = postRepository.findByNo(postNo).orElse(null);
+        if (user.getNo() != post.getUser().getNo())
+            throw new RuntimeException();
 
-            postRepository.deleteById(postNo);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        postRepository.deleteById(postNo);
+        return true;
     }
 
     @Override
+    @Transactional
     public boolean likePost(long postNo, long userNo) {
-        try {
-            PostLike like = PostLike.builder()
-                    .post(postRepository.findByNo(postNo).orElse(null))
-                    .user(userRepository.findByNo(userNo).orElse(null))
-                    .build();
+        PostLike like = PostLike.builder()
+                .post(postRepository.findByNo(postNo).orElse(null))
+                .user(userRepository.findByNo(userNo).orElse(null))
+                .build();
 
-            PostLike existLike = postLikeRepository.findByPostNoAndUserNo(postNo, userNo);
+        PostLike existLike = postLikeRepository.findByPostNoAndUserNo(postNo, userNo);
 
-            if (existLike == null) {
-                postLikeRepository.save(like);
-                postRepository.updateLikePlus(postNo);
-            }
-            else {
-                long existNo = existLike.getNo();
-                postRepository.updateLikeMinus(postNo);
-                postLikeRepository.deleteById(existNo);
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
+        if (existLike == null) {
+            postLikeRepository.save(like);
+            postRepository.updateLikePlus(postNo);
         }
+        else {
+            long existNo = existLike.getNo();
+            postRepository.updateLikeMinus(postNo);
+            postLikeRepository.deleteById(existNo);
+        }
+        return true;
     }
-
 }
