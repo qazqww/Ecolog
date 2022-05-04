@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface PloggingService {
-    PloggingResDto registPlogging(User user, PloggingReqDto ploggingReqDto, MultipartFile resultImg, MultipartFile routeImg);
+    PloggingResDto registPlogging(User user, PloggingReqDto ploggingReqDto, List<MultipartFile> imageFileList);
 
     List<PloggingResDto> getPloggingList(long userNo);
 

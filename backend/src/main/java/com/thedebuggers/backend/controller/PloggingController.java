@@ -35,11 +35,10 @@ public class PloggingController {
     })
     private ResponseEntity<PloggingResDto> registPlogging(@ApiIgnore Authentication authentication,
                                                           @RequestPart(value = "plogging_info") PloggingReqDto ploggingReqDto,
-                                                          @RequestPart(value = "result_img") MultipartFile resultImg,
-                                                          @RequestPart(value = "route_img") MultipartFile routeImg) {
+                                                          @RequestPart(value = "images") @ApiParam(value = "결과, 경로 순으로 업로드") List<MultipartFile> imageFileList) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
-        PloggingResDto ploggingResDto = ploggingService.registPlogging(user, ploggingReqDto, resultImg, routeImg);
+        PloggingResDto ploggingResDto = ploggingService.registPlogging(user, ploggingReqDto, imageFileList);
         return ResponseEntity.ok(ploggingResDto);
     }
 

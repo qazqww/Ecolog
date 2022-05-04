@@ -23,19 +23,18 @@ public class PloggingServiceImpl implements PloggingService {
     private final S3Service s3Service;
 
     @Override
-    public PloggingResDto registPlogging(User user, PloggingReqDto ploggingReqDto, MultipartFile resultImg, MultipartFile routeImg) {
+    public PloggingResDto registPlogging(User user, PloggingReqDto ploggingReqDto, List<MultipartFile> imageFileList) {
 
-        if (resultImg == null || routeImg == null) {
+        if (imageFileList.size() < 2) {
             throw new CustomException(ErrorCode.CONTENT_NOT_FILLED);
         }
-        String resultImgUrl = s3Service.upload(resultImg);
-        String routeImgUrl = s3Service.upload(routeImg);
+        List<String> imageUrls = s3Service.upload(imageFileList);
 
         Plogging plogging = Plogging.builder()
                 .startedAt(ploggingReqDto.getStartedAt())
                 .endedAt(ploggingReqDto.getEndedAt())
-                .resultImg(resultImgUrl)
-                .routeImg(routeImgUrl)
+                .resultImg(imageUrls.get(0))
+                .routeImg(imageUrls.get(1))
                 .time(ploggingReqDto.getTime())
                 .distance(ploggingReqDto.getDistance())
                 .calories(ploggingReqDto.getCalories())
