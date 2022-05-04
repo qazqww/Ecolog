@@ -89,5 +89,27 @@ public class CampaignController {
         return ResponseEntity.ok(CampaignResDto.of(campaign, userList));
     }
 
+    @PostMapping("/{campaignNo}")
+    @ApiOperation(value = "캠페인 모집 참가 / 참가취소")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<CampaignResDto> joinCampaign(
+            @PathVariable long campaignNo,
+            Authentication authentication
+    ) {
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        long userNo = user.getNo();
+        Campaign campaign = campaignService.getCampaign(campaignNo);
+
+        campaignService.joinCampaign(campaign, user);
+        List<User> userList = campaignService.getCampaignMember(campaignNo);
+
+        return ResponseEntity.ok(CampaignResDto.of(campaign, userList));
+    }
+
 
 }

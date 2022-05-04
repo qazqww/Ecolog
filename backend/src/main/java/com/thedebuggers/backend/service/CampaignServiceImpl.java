@@ -70,4 +70,21 @@ public class CampaignServiceImpl implements CampaignService{
         Campaign campaign = campaignRespository.findByNo(campaignNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
         return campaign;
     }
+
+    @Override
+    public void joinCampaign(Campaign campaign, User user) {
+        UserCampaign existUserCampaign = userCampaignRepository.findByCampaignNoAndUserNo(campaign.getNo(), user.getNo());
+
+        if (existUserCampaign == null) {
+            UserCampaign userCampaign = UserCampaign.builder()
+                    .campaign(campaign)
+                    .user(user)
+                    .build();
+            userCampaignRepository.save(userCampaign);
+        }
+        else {
+            long existNo = existUserCampaign.getNo();
+            userCampaignRepository.deleteById(existNo);
+        }
+    }
 }

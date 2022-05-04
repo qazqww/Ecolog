@@ -14,4 +14,6 @@ public interface CampaignService {
     List<User> getCampaignMember(long campaignNo);
 
     Campaign getCampaign(long campaignNo);
+
+    void joinCampaign(Campaign campaign, User user);
 }

@@ -14,4 +14,6 @@ public interface UserCampaignRepository extends JpaRepository<UserCampaign, Long
 
     @Query("select uc.user from UserCampaign uc where uc.campaign.no = :campaignNo")
     List<User> findAllUserByCampaignNo(long campaignNo);
+
+    UserCampaign findByCampaignNoAndUserNo(long campaignNo, long no);
 }
