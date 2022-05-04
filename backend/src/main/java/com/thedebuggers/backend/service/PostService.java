@@ -3,12 +3,12 @@ package com.thedebuggers.backend.service;
 import com.thedebuggers.backend.domain.entity.Post;
 import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.dto.PostReqDto;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface PostService {
-    Post registPost(User user, PostReqDto postReqDto, long communityNo);
+    Post registPost(User user, PostReqDto postReqDto, long communityNo, MultipartFile imageFile);
 
     List<Post> getAllPost();
 
@@ -22,7 +22,7 @@ public interface PostService {
 
     Post getPost(User user, long postNo) throws Exception;
 
-    boolean modifyPost(User user, long postNo, PostReqDto postDto);
+    boolean modifyPost(User user, long postNo, PostReqDto postDto, MultipartFile imageFile);
 
     boolean deletePost(User user, long postNo);
 

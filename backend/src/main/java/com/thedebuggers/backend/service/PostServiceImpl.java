@@ -11,6 +11,7 @@ import com.thedebuggers.backend.dto.PostReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,18 +26,25 @@ public class PostServiceImpl implements PostService {
     private final PostLikeRepository postLikeRepository;
     private final UserCommunityRepository userCommunityRepository;
 
+    private final S3Service s3Service;
+
     @Override
-    public Post registPost(User user, PostReqDto postReqDto, long communityNo) {
+    public Post registPost(User user, PostReqDto postReqDto, long communityNo, MultipartFile imageFile) {
         if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null)
             throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
 
         if (postReqDto.getTitle() == null || postReqDto.getContent() == null)
             throw new CustomException(ErrorCode.CONTENT_NOT_FILLED);
 
+        String imageUrl = null;
+        if (imageFile != null) {
+            imageUrl = s3Service.upload(imageFile);
+        }
+
         Post post = Post.builder()
                 .title(postReqDto.getTitle())
                 .content(postReqDto.getContent())
-                .image(postReqDto.getImage())
+                .image(imageUrl)
                 .createdAt(LocalDateTime.now())
                 .isOpen(postReqDto.isOpen())
                 .community(communityRepository.findByNo(communityNo))
@@ -82,10 +90,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean modifyPost(User user, long postNo, PostReqDto postDto) {
+    public boolean modifyPost(User user, long postNo, PostReqDto postDto, MultipartFile imageFile) {
         Post post = postRepository.findByNo(postNo).orElse(null);
         if (user.getNo() != post.getUser().getNo())
             throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
+
+        String imageUrl = null;
+
+        if (imageFile != null) {
+            imageUrl = s3Service.upload(imageFile);
+        }
 
         if (postDto.getTitle() != null)
             post.setTitle(postDto.getTitle());
@@ -93,9 +107,7 @@ public class PostServiceImpl implements PostService {
         if (postDto.getContent() != null)
             post.setContent(postDto.getContent());
 
-        if (postDto.getImage() != null)
-            post.setImage(postDto.getImage());
-
+        post.setImage(imageUrl);
         post.setOpen(postDto.isOpen());
 
         postRepository.save(post);

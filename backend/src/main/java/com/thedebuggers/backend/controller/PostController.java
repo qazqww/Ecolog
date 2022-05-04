@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
@@ -35,10 +36,11 @@ public class PostController {
     })
     private ResponseEntity<PostResDto> registPost(@ApiIgnore Authentication authentication,
                                                   @ApiParam(defaultValue = "1") @PathVariable long communityNo,
-                                                  @RequestBody PostReqDto postReqDto) {
+                                                  @RequestPart(value = "post_info") PostReqDto postReqDto,
+                                                  @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
-        Post post = postService.registPost(user, postReqDto, communityNo);
+        Post post = postService.registPost(user, postReqDto, communityNo, imageFile);
         return ResponseEntity.ok(PostResDto.of(post));
     }
 
@@ -84,10 +86,12 @@ public class PostController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     private ResponseEntity<Boolean> modifyPost(@ApiIgnore Authentication authentication,
-                                               @PathVariable long postNo, @RequestBody PostReqDto postDto) {
+                                               @PathVariable long postNo,
+                                               @RequestPart(value = "post_info") PostReqDto postDto,
+                                               @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
-        boolean result = postService.modifyPost(user, postNo, postDto);
+        boolean result = postService.modifyPost(user, postNo, postDto, imageFile);
         return ResponseEntity.ok(result);
     }
 
