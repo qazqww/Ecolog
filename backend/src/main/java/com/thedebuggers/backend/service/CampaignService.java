@@ -12,4 +12,6 @@ public interface CampaignService {
     List<Campaign> getCampaignList(long communityNo);
 
     List<User> getCampaignMember(long campaignNo);
+
+    Campaign getCampaign(long campaignNo);
 }

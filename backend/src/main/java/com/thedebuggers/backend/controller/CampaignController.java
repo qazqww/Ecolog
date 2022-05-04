@@ -73,5 +73,21 @@ public class CampaignController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/{campaignNo}")
+    @ApiOperation(value = "켐페인 모집 상세 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<CampaignResDto> getCampaign(
+            @PathVariable long campaignNo
+    ) {
+        Campaign campaign = campaignService.getCampaign(campaignNo);
+        List<User> userList = campaignService.getCampaignMember(campaignNo);
+
+        return ResponseEntity.ok(CampaignResDto.of(campaign, userList));
+    }
+
 
 }

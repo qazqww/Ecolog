@@ -1,5 +1,7 @@
 package com.thedebuggers.backend.service;
 
+import com.thedebuggers.backend.common.exception.CustomException;
+import com.thedebuggers.backend.common.util.ErrorCode;
 import com.thedebuggers.backend.domain.entity.Campaign;
 import com.thedebuggers.backend.domain.entity.Community;
 import com.thedebuggers.backend.domain.entity.User;
@@ -61,5 +63,11 @@ public class CampaignServiceImpl implements CampaignService{
     public List<User> getCampaignMember(long campaignNo) {
         List<User> userList = userCampaignRepository.findAllUserByCampaignNo(campaignNo);
         return userList;
+    }
+
+    @Override
+    public Campaign getCampaign(long campaignNo) {
+        Campaign campaign = campaignRespository.findByNo(campaignNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+        return campaign;
     }
 }
