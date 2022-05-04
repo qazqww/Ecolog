@@ -8,6 +8,7 @@ import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.domain.entity.UserCommunity;
 import com.thedebuggers.backend.domain.repository.*;
 import com.thedebuggers.backend.dto.PostReqDto;
+import com.thedebuggers.backend.dto.PostResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class PostServiceImpl implements PostService {
     private final S3Service s3Service;
 
     @Override
-    public Post registPost(User user, PostReqDto postReqDto, long communityNo, MultipartFile imageFile) {
+    public PostResDto registPost(User user, PostReqDto postReqDto, long communityNo, MultipartFile imageFile) {
         if (userCommunityRepository.findAllByCommunityNoAndUserNo(communityNo, user.getNo()) == null)
             throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
 
@@ -52,46 +54,49 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         post = postRepository.save(post);
-        return post;
+        PostResDto postResDto = PostResDto.of(post);
+        return postResDto;
     }
 
     @Override
-    public List<Post> getAllPost() {
-        return postRepository.findAllByIsOpenTrue();
+    public List<PostResDto> getAllPost() {
+        List<PostResDto> postResDtoList = postRepository.findAllByIsOpenTrue().stream().map(PostResDto::of).collect(Collectors.toList());
+        return postResDtoList;
     }
 
     @Override
-    public List<Post> getPostList(long communityNo) {
-        List<Post> postList = postRepository.findAllByCommunityNo(communityNo);
-        return postList;
+    public List<PostResDto> getPostList(long communityNo) {
+        List<PostResDto> postResDtoList = postRepository.findAllByCommunityNo(communityNo).stream().map(PostResDto::of).collect(Collectors.toList());
+        return postResDtoList;
     }
 
     @Override
-    public List<Post> getMyPostList(long userNo) {
-        return postRepository.findAllByUserNoAndIsOpenTrue(userNo);
+    public List<PostResDto> getMyPostList(long userNo) {
+        return postRepository.findAllByUserNoAndIsOpenTrue(userNo).stream().map(PostResDto::of).collect(Collectors.toList());
     }
     @Override
-    public List<Post> getMyPostListInCommunity(long communityNo, long userNo) {
-        return postRepository.findAllByCommunityNoAndUserNo(communityNo, userNo);
+    public List<PostResDto> getMyPostListInCommunity(long communityNo, long userNo) {
+        return postRepository.findAllByCommunityNoAndUserNo(communityNo, userNo).stream().map(PostResDto::of).collect(Collectors.toList());
     }
 
     @Override
     public Post getPost(long postNo) {
-        return postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
-    }
-
-    @Override
-    public Post getPost(User user, long postNo) {
         Post post = postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
-        if (!post.isOpen() && userCommunityRepository.findAllByCommunityNoAndUserNo(post.getCommunity().getNo(), user.getNo()) == null) {
-            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
-        }
         return post;
     }
 
     @Override
+    public PostResDto getPost(User user, long postNo) {
+        Post post = postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+        if (!post.isOpen() && userCommunityRepository.findAllByCommunityNoAndUserNo(post.getCommunity().getNo(), user.getNo()) == null) {
+            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
+        }
+        return PostResDto.of(post);
+    }
+
+    @Override
     public boolean modifyPost(User user, long postNo, PostReqDto postDto, MultipartFile imageFile) {
-        Post post = postRepository.findByNo(postNo).orElse(null);
+        Post post = postRepository.findByNo(postNo).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
         if (user.getNo() != post.getUser().getNo())
             throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
 
