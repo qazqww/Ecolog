@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Api(value = "캠페인 API", tags = "Campaign")
 @Slf4j
 @RequestMapping("/api/v1/community/{communityNo}/campaign")
@@ -44,8 +47,31 @@ public class CampaignController {
         }catch (Exception e) {
             return ResponseEntity.ok("Failed");
         }
+        long campaignNo = campaign.getNo();
+        List<User> userList = campaignService.getCampaignMember(campaignNo);
 
-        return ResponseEntity.ok(CampaignResDto.of(campaign));
+        return ResponseEntity.ok(CampaignResDto.of(campaign, userList));
     }
+
+    @GetMapping
+    @ApiOperation(value = "캠페인 모집 목록 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<List<CampaignResDto>> getCampaignList(
+            @PathVariable long communityNo
+    ) {
+        List<Campaign> campaignList = campaignService.getCampaignList(communityNo);
+
+        List<CampaignResDto> result = campaignList.stream().map(campaign -> {
+            List<User> userList = campaignService.getCampaignMember(campaign.getNo());
+            return CampaignResDto.of(campaign, userList);
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
+    }
+
 
 }

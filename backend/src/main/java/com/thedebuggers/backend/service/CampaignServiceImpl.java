@@ -10,6 +10,8 @@ import com.thedebuggers.backend.dto.CampaignReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class CampaignServiceImpl implements CampaignService{
@@ -47,5 +49,17 @@ public class CampaignServiceImpl implements CampaignService{
         userCampaignRepository.save(userCampaign);
 
         return campaign;
+    }
+
+    @Override
+    public List<Campaign> getCampaignList(long communityNo) {
+        List<Campaign> campaignList = campaignRespository.findAllByCommunityNo(communityNo);
+        return campaignList;
+    }
+
+    @Override
+    public List<User> getCampaignMember(long campaignNo) {
+        List<User> userList = userCampaignRepository.findAllUserByCampaignNo(campaignNo);
+        return userList;
     }
 }
