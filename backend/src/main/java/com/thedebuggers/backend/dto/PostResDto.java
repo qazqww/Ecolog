@@ -18,7 +18,7 @@ public class PostResDto {
     private LocalDateTime createdAt;
     private boolean isOpen;
     private long likeCount;
-    private ProfileResDto writer;
+    private BaseUserInfoResDto writer;
 
     public static PostResDto of(Post post) {
         return PostResDto.builder()
@@ -29,7 +29,7 @@ public class PostResDto {
                 .createdAt(post.getCreatedAt())
                 .isOpen(post.isOpen())
                 .likeCount(post.getLikeCount())
-                .writer(ProfileResDto.of(post.getUser()))
+                .writer(BaseUserInfoResDto.of(post.getUser()))
                 .build();
     }
 }
