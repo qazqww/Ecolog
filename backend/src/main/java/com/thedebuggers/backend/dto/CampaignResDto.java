@@ -4,6 +4,8 @@ import com.thedebuggers.backend.domain.entity.Campaign;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -21,10 +23,11 @@ public class CampaignResDto {
     private LocalDateTime end_date;
 
     private long max_personnel;
+    private List<ProfileResDto> join_personnel;
 
     private BaseUserInfoResDto writer;
 
-    public static CampaignResDto of(Campaign campaign){
+    public static CampaignResDto of(Campaign campaign, List<User> userList){
         return CampaignResDto.builder()
                 .no(campaign.getNo())
                 .title(campaign.getTitle())
