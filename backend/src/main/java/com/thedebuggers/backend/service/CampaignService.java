@@ -19,4 +19,6 @@ public interface CampaignService {
     void joinCampaign(Campaign campaign, User user);
 
     Campaign updateCampaign(CampaignReqDto campaignReqDto, long campaignNo, User user, MultipartFile imageFile);
+
+    boolean deleteCampaign(User user, long campaignNo);
 }

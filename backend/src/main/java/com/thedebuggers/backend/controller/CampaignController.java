@@ -135,5 +135,23 @@ public class CampaignController {
         return ResponseEntity.ok(CampaignResDto.of(campaign, userList));
     }
 
+    @DeleteMapping("/{campaignNo}")
+    @ApiOperation(value = "캠페인 모집 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<Boolean> deleteCampaign(
+            @PathVariable long campaignNo,
+            @ApiIgnore Authentication authentication
+    ) {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+
+        boolean result = campaignService.deleteCampaign(user, campaignNo);
+
+        return ResponseEntity.ok(result);
+    }
 
 }

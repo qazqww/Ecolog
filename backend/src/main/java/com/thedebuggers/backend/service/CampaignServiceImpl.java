@@ -117,4 +117,16 @@ public class CampaignServiceImpl implements CampaignService{
         return campaign;
 
     }
+
+    @Override
+    public boolean deleteCampaign(User user, long campaignNo) {
+        Campaign campaign = campaignRespository.findByNo(campaignNo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
+        if (campaign.getUser().getNo() != user.getNo()) throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
+
+        campaignRespository.delete(campaign);
+
+
+        return true;
+    }
 }
