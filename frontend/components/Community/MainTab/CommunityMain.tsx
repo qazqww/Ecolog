@@ -4,6 +4,7 @@ import {Community} from '../../../api/community';
 import {useQuery} from 'react-query';
 import {getCommunityList} from '../../../api/community';
 import {useNavigation} from '@react-navigation/native';
+import {getHotCommunityList} from '../../../api/community';
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
@@ -106,6 +107,10 @@ function CommunityMain() {
   ];
 
   const {data: communityListData} = useQuery('CommunityList', getCommunityList);
+  const {data: hotCommunity} = useQuery(
+    'hotCommunityList',
+    getHotCommunityList,
+  );
   return (
     <View style={styles.contentContainer}>
       <Text>인기 캠페인</Text>
@@ -120,7 +125,7 @@ function CommunityMain() {
       <FlatList
         style={styles.hotCommuContainer}
         horizontal={true}
-        data={communityListData}
+        data={hotCommunity}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}: any) => <HotCommu community={item} />}
       />

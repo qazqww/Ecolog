@@ -23,7 +23,7 @@ interface CommunityDetailProps {
 function CommunityHomeTab({data}: CommunityDetailProps) {
   const FirstRoute = () => <CommunityHome data={data} />;
   const SecondRoute = () => <CommunityNotice />;
-  const ThirdRoute = () => <CommunityPromotion />;
+  const ThirdRoute = () => <CommunityPromotion data={data} />;
   const fourthRoute = () => <CommunityFree />;
   const fifthRoute = () => <CommunityMyInfo />;
 

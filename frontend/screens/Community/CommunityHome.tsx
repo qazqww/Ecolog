@@ -2,8 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, TextInput} from 'react-native';
 import CommunityHomeTab from '../../components/Community/HomeTab/CommunityHomeTab';
 import {useQuery} from 'react-query';
-import {CommunityDetail, getCommunityDetail} from '../../api/community';
-import {useEffect} from 'react';
+import {getCommunityDetail} from '../../api/community';
 
 const styles = StyleSheet.create({
   container: {
