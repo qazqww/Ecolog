@@ -36,13 +36,18 @@ public class CommunityController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     private ResponseEntity<List<CommunityResDto>> getCommunityList(
-
+            @ApiIgnore Authentication authentication
     ){
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        long userNo = user.getNo();
+
         List<Community> communityList = communityService.getCommunityList();
 
         List<CommunityResDto> result = communityList.stream().map(community -> {
             long userCount = communityService.getCommunityMemberCount(community.getNo());
-            return CommunityResDto.of(community, userCount);
+            boolean is_join = communityService.checkCommunityUser(userNo, community.getNo());
+            return CommunityResDto.of(community, userCount, is_join);
         }).collect(Collectors.toList());
 
         return ResponseEntity.ok(result);
@@ -65,8 +70,9 @@ public class CommunityController {
 
         Community community = communityService.registCommunity(communityDto, userNo);
         long userCount = communityService.getCommunityMemberCount(community.getNo());
+        boolean is_join = communityService.checkCommunityUser(userNo, community.getNo());
 
-        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount, is_join));
     }
 
     @GetMapping("/{no}")
@@ -77,12 +83,18 @@ public class CommunityController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     private ResponseEntity<CommunityResDto> getCommunity(
-            @ApiParam("커뮤니티 번호") @PathVariable long no
+            @ApiParam("커뮤니티 번호") @PathVariable long no,
+            @ApiIgnore Authentication authentication
     ) {
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        long userNo = user.getNo();
+
         Community community = communityService.getCommunity(no);
         long userCount = communityService.getCommunityMemberCount(community.getNo());
+        boolean is_join = communityService.checkCommunityUser(userNo, community.getNo());
 
-        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount, is_join));
     }
 
 
@@ -102,9 +114,10 @@ public class CommunityController {
 
         Community community = communityService.joinCommunity(no, user);
         long userCount = communityService.getCommunityMemberCount(community.getNo());
+        boolean is_join = communityService.checkCommunityUser(user.getNo(), community.getNo());
 
 
-        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount, is_join));
     }
 
     @PutMapping("/{communityNo}")
@@ -124,8 +137,9 @@ public class CommunityController {
 
         Community community = communityService.updateCommunity(communityNo, user, communityDto);
         long userCount = communityService.getCommunityMemberCount(community.getNo());
+        boolean is_join = communityService.checkCommunityUser(user.getNo(), community.getNo());
 
-        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount, is_join));
     }
 
     @DeleteMapping("/{communityNo}")
@@ -206,7 +220,8 @@ public class CommunityController {
 
         List<CommunityResDto> result = communityList.stream().map(community -> {
             long userCount = communityService.getCommunityMemberCount(community.getNo());
-            return CommunityResDto.of(community, userCount);
+            boolean is_join = communityService.checkCommunityUser(userNo, community.getNo());
+            return CommunityResDto.of(community, userCount, is_join);
         }).collect(Collectors.toList());
 
         return ResponseEntity.ok(result);
@@ -220,13 +235,19 @@ public class CommunityController {
             @ApiResponse(code = 500, message = "Server Error")
     })
     private ResponseEntity<List<CommunityResDto>> getPopularCommunityList(
+            @ApiIgnore Authentication authentication
 
     ) {
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        long userNo = user.getNo();
+
         List<Community> communityList = communityService.getPopularCommunityList();
 
         return ResponseEntity.ok(communityList.stream().map(community -> {
             long userCount = communityService.getCommunityMemberCount(community.getNo());
-            return CommunityResDto.of(community, userCount);
+            boolean is_join = communityService.checkCommunityUser(userNo, community.getNo());
+            return CommunityResDto.of(community, userCount, is_join);
         }).collect(Collectors.toList()));
     }
 

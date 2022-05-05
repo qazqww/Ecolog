@@ -28,4 +28,6 @@ public interface CommunityService {
     List<Community> getPopularCommunityList();
 
     long getCommunityMemberCount(long communityNo);
+
+    boolean checkCommunityUser(long userNo, long communityNo);
 }

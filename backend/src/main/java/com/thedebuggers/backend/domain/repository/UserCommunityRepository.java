@@ -28,4 +28,6 @@ public interface UserCommunityRepository extends JpaRepository<UserCommunity, Lo
 
     @Query("select count(uc.user) from UserCommunity uc where uc.community.no = :communityNo")
     long findCommunityCountByCommunityNo(long communityNo);
+
+    UserCommunity findByCommunityNoAndUserNo(long communityNo, long userNo);
 }

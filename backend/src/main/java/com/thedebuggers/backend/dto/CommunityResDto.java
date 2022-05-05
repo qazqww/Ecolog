@@ -19,8 +19,9 @@ public class CommunityResDto {
     private String tag;
 
     private long join_count;
+    private boolean is_join;
 
-    public static CommunityResDto of(Community community, long userCount) {
+    public static CommunityResDto of(Community community, long userCount, boolean is_join) {
         return CommunityResDto.builder()
                 .no(community.getNo())
                 .title(community.getTitle())
@@ -31,6 +32,7 @@ public class CommunityResDto {
                 .sigungu(community.getSigungu())
                 .tag(community.getTag())
                 .join_count(userCount)
+                .is_join(is_join)
                 .build();
     }
 }
