@@ -15,6 +15,9 @@ services:
     depends_on:
       - mysql
       - redis
+    restart: always
+    networks:
+      - ecolog_network 
   mysql:
     image: mysql
     container_name: ecolog_mysql
@@ -29,6 +32,9 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+    restart: always
+    networks:
+      - ecolog_network 
   redis:
     container_name: ecolog_redis
     image: redis:latest
@@ -38,5 +44,8 @@ services:
     volumes:
       - ./redis/data/:/data
       - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
+    restart: always
+    networks:
+      - ecolog_network 
 networks:
-  ecolog:
+  ecolog-network:
