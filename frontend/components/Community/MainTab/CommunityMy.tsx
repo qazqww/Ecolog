@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 import CommunityMyItem from './CommunityMyItem';
 import {useQuery} from 'react-query';
-import {getCommunityList} from '../../../api/community';
+import {getMyCommunity} from '../../../api/community';
 const styles = StyleSheet.create({
   myListContainer: {
     flexGrow: 0,
@@ -21,15 +21,13 @@ const styles = StyleSheet.create({
   },
 });
 
-function CommunityMy({navigation}: any) {
-  const {data: communityListData} = useQuery('CommunityList', getCommunityList);
+function CommunityMy() {
+  const {data: communityListData} = useQuery('myCommunity', getMyCommunity);
   return (
     <FlatList
       style={styles.myListContainer}
       data={communityListData}
-      renderItem={({item}: any) => (
-        <CommunityMyItem navigation={navigation} community={item} />
-      )}
+      renderItem={({item}: any) => <CommunityMyItem community={item} />}
     />
   );
 }

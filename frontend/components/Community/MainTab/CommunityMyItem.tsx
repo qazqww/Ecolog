@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {Community} from '../../../api/community';
@@ -12,6 +13,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: '30%',
+    width: '50%',
   },
   mimage: {
     height: '20%',
@@ -19,17 +21,17 @@ const styles = StyleSheet.create({
   },
 });
 interface CommunityItemProps {
-  navigation: any;
   community: Community;
 }
-function CommunityMyItem({navigation, community}: CommunityItemProps) {
+function CommunityMyItem({community}: CommunityItemProps) {
+  const navigation = useNavigation<any>();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('CommunityHome')}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('CommunityHome', {id: community.no})}>
       <View style={styles.myItem}>
         <Image source={{uri: community.image}} style={styles.image} />
         <Text>{community.title}</Text>
         <Text>{community.no}</Text>
-        <Text>{community.manager.email}</Text>
         <Image source={{uri: community.manager.image}} style={styles.mimage} />
       </View>
     </TouchableOpacity>

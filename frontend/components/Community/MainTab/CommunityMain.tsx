@@ -1,8 +1,9 @@
 import React from 'react';
-import {Text, View, FlatList, StyleSheet} from 'react-native';
+import {Text, View, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {Community} from '../../../api/community';
 import {useQuery} from 'react-query';
 import {getCommunityList} from '../../../api/community';
+import {useNavigation} from '@react-navigation/native';
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
@@ -60,7 +61,6 @@ const styles = StyleSheet.create({
 });
 
 interface CommunityItemProps {
-  navigation: any;
   community: Community;
 }
 
@@ -71,25 +71,31 @@ const hotItem = ({item}: any) => {
     </View>
   );
 };
-function HotCommu({navigation, community}: CommunityItemProps) {
+function HotCommu({community}: CommunityItemProps) {
+  const navigation = useNavigation<any>();
   return (
-    <View style={styles.hotCommu}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('CommunityHome', {id: community.no})}
+      style={styles.hotCommu}>
       <Text>{community.title}</Text>
       <Text>{community.no}</Text>
       <Text>{community.manager.email}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
-function MyItem({navigation, community}: CommunityItemProps) {
+function MyItem({community}: CommunityItemProps) {
+  const navigation = useNavigation<any>();
   return (
-    <View style={styles.myItem}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('CommunityHome', {id: community.no})}
+      style={styles.myItem}>
       <Text>{community.title}</Text>
       <Text>{community.no}</Text>
       <Text>{community.manager.email}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
-function CommunityMain({navigation}: any) {
+function CommunityMain() {
   const hotdata = [
     '용기내챌린지',
     '챌린저',
@@ -116,17 +122,13 @@ function CommunityMain({navigation}: any) {
         horizontal={true}
         data={communityListData}
         showsHorizontalScrollIndicator={false}
-        renderItem={({item}: any) => (
-          <HotCommu navigation={navigation} community={item} />
-        )}
+        renderItem={({item}: any) => <HotCommu community={item} />}
       />
       <Text>내 커뮤니티</Text>
       <FlatList
         style={styles.myListContainer}
         data={communityListData}
-        renderItem={({item}: any) => (
-          <MyItem navigation={navigation} community={item} />
-        )}
+        renderItem={({item}: any) => <MyItem community={item} />}
       />
     </View>
   );
