@@ -103,6 +103,9 @@ public class UserServiceImpl implements UserService {
                     .followee(followee)
                     .build();
 
+            follower.addFollowing(newFollowInfo);
+            followee.addFollower(newFollowInfo);
+
             followRepository.save(newFollowInfo);
         }
 
