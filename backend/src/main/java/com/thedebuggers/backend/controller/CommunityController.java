@@ -40,8 +40,10 @@ public class CommunityController {
     ){
         List<Community> communityList = communityService.getCommunityList();
 
-        List<CommunityResDto> result = communityList.stream().map(CommunityResDto::of).collect(Collectors.toList());
-//        Community res = Community.builder().title("ex").description("ex2").build();
+        List<CommunityResDto> result = communityList.stream().map(community -> {
+            long userCount = communityService.getCommunityMemberCount(community.getNo());
+            return CommunityResDto.of(community, userCount);
+        }).collect(Collectors.toList());
 
         return ResponseEntity.ok(result);
     }
@@ -62,8 +64,9 @@ public class CommunityController {
         long userNo = user.getNo();
 
         Community community = communityService.registCommunity(communityDto, userNo);
+        long userCount = communityService.getCommunityMemberCount(community.getNo());
 
-        return ResponseEntity.ok(CommunityResDto.of(community));
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
     }
 
     @GetMapping("/{no}")
@@ -77,7 +80,9 @@ public class CommunityController {
             @ApiParam("커뮤니티 번호") @PathVariable long no
     ) {
         Community community = communityService.getCommunity(no);
-        return ResponseEntity.ok(CommunityResDto.of(community));
+        long userCount = communityService.getCommunityMemberCount(community.getNo());
+
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
     }
 
 
@@ -95,9 +100,11 @@ public class CommunityController {
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         User user = userDetails.getUser();
 
-
         Community community = communityService.joinCommunity(no, user);
-        return ResponseEntity.ok(CommunityResDto.of(community));
+        long userCount = communityService.getCommunityMemberCount(community.getNo());
+
+
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
     }
 
     @PutMapping("/{communityNo}")
@@ -116,7 +123,9 @@ public class CommunityController {
         User user = userDetails.getUser();
 
         Community community = communityService.updateCommunity(communityNo, user, communityDto);
-        return ResponseEntity.ok(CommunityResDto.of(community));
+        long userCount = communityService.getCommunityMemberCount(community.getNo());
+
+        return ResponseEntity.ok(CommunityResDto.of(community, userCount));
     }
 
     @DeleteMapping("/{communityNo}")
@@ -195,7 +204,10 @@ public class CommunityController {
 
         List<Community> communityList = communityService.getMyCommunityList(userNo);
 
-        List<CommunityResDto> result = communityList.stream().map(CommunityResDto::of).collect(Collectors.toList());
+        List<CommunityResDto> result = communityList.stream().map(community -> {
+            long userCount = communityService.getCommunityMemberCount(community.getNo());
+            return CommunityResDto.of(community, userCount);
+        }).collect(Collectors.toList());
 
         return ResponseEntity.ok(result);
     }
@@ -212,7 +224,10 @@ public class CommunityController {
     ) {
         List<Community> communityList = communityService.getPopularCommunityList();
 
-        return ResponseEntity.ok(communityList.stream().map(CommunityResDto::of).collect(Collectors.toList()));
+        return ResponseEntity.ok(communityList.stream().map(community -> {
+            long userCount = communityService.getCommunityMemberCount(community.getNo());
+            return CommunityResDto.of(community, userCount);
+        }).collect(Collectors.toList()));
     }
 
 }

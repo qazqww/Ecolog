@@ -26,4 +26,6 @@ public interface CommunityService {
     List<Community> getMyCommunityList(long userNo);
 
     List<Community> getPopularCommunityList();
+
+    long getCommunityMemberCount(long communityNo);
 }
