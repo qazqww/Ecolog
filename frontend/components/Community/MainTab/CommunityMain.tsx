@@ -1,5 +1,8 @@
 import React from 'react';
 import {Text, View, FlatList, StyleSheet} from 'react-native';
+import {Community} from '../../../api/community';
+import {useQuery} from 'react-query';
+import {getCommunityList} from '../../../api/community';
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
@@ -55,13 +58,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
-const myItem = ({item}: any) => {
-  return (
-    <View style={styles.myItem}>
-      <Text>{item.title}</Text>
-    </View>
-  );
-};
+
+interface CommunityItemProps {
+  navigation: any;
+  community: Community;
+}
+
 const hotItem = ({item}: any) => {
   return (
     <View style={styles.hotItem}>
@@ -69,14 +71,25 @@ const hotItem = ({item}: any) => {
     </View>
   );
 };
-const hotCommu = ({item}: any) => {
+function HotCommu({navigation, community}: CommunityItemProps) {
   return (
     <View style={styles.hotCommu}>
-      <Text>{item.title}</Text>
+      <Text>{community.title}</Text>
+      <Text>{community.no}</Text>
+      <Text>{community.manager.email}</Text>
     </View>
   );
-};
-function CommunityMain() {
+}
+function MyItem({navigation, community}: CommunityItemProps) {
+  return (
+    <View style={styles.myItem}>
+      <Text>{community.title}</Text>
+      <Text>{community.no}</Text>
+      <Text>{community.manager.email}</Text>
+    </View>
+  );
+}
+function CommunityMain({navigation}: any) {
   const hotdata = [
     '용기내챌린지',
     '챌린저',
@@ -85,22 +98,8 @@ function CommunityMain() {
     '플로깅챌린지',
     '아이스버킷챌린지',
   ];
-  const hotcommu = [
-    {title: '구미 일진 박승원팸', member: 5},
-    {title: '구미 플로깅 고수모임', member: 50},
-    {title: '구미 일진 박승원팸', member: 54},
-    {title: '구미 일진 박승원팸', member: 66},
-    {title: '구미 일진 박승원팸', member: 12},
-    {title: '구미 일진 박승원팸', member: 3},
-  ];
-  const mydata = [
-    {title: '구미 일진 박승원팸', member: 5},
-    {title: '구미 플로깅 고수모임', member: 50},
-    {title: '구미 일진 박승원팸', member: 54},
-    {title: '구미 일진 박승원팸', member: 66},
-    {title: '구미 일진 박승원팸', member: 12},
-    {title: '구미 일진 박승원팸', member: 3},
-  ];
+
+  const {data: communityListData} = useQuery('CommunityList', getCommunityList);
   return (
     <View style={styles.contentContainer}>
       <Text>인기 캠페인</Text>
@@ -115,15 +114,19 @@ function CommunityMain() {
       <FlatList
         style={styles.hotCommuContainer}
         horizontal={true}
-        data={hotcommu}
-        renderItem={hotCommu}
+        data={communityListData}
         showsHorizontalScrollIndicator={false}
+        renderItem={({item}: any) => (
+          <HotCommu navigation={navigation} community={item} />
+        )}
       />
       <Text>내 커뮤니티</Text>
       <FlatList
         style={styles.myListContainer}
-        data={mydata}
-        renderItem={myItem}
+        data={communityListData}
+        renderItem={({item}: any) => (
+          <MyItem navigation={navigation} community={item} />
+        )}
       />
     </View>
   );
