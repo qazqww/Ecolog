@@ -52,19 +52,5 @@ public class User {
     @OneToMany(mappedBy = "followee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserFollow> follower = new ArrayList<>();
 
-    public List<User> getFollowingUser(){
-        return this.following.stream().map(UserFollow::getFollowee).collect(Collectors.toList());
-    }
-    public List<User> getFollowerUser(){
-        return this.follower.stream().map(UserFollow::getFollower).collect(Collectors.toList());
-    }
-
-    public void addFollowing(UserFollow following){
-        this.following.add(following);
-    }
-
-    public void addFollower(UserFollow follower){
-        this.following.add(follower);
-    }
 
 }

@@ -59,10 +59,9 @@ public class UserController {
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         long requestUserNo = userDetails.getUser().getNo();
 
-        User requestUser = userService.getUserByUserNo(requestUserNo);
-        User user = userService.getUserByUserNo(userNo);
+        ProfileResDto profileResDto = userService.getUserProfile(requestUserNo, userNo);
 
-        return ResponseEntity.ok(ProfileResDto.of(user, requestUser));
+        return ResponseEntity.ok(profileResDto);
     }
 
     @GetMapping("/{userNo}/post")
