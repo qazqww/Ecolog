@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResDto> getAllPost() {
-        List<PostResDto> postResDtoList = postRepository.findAllByTypeAndIsOpenTrue(3).stream().map(PostResDto::of).collect(Collectors.toList());
+        List<PostResDto> postResDtoList = postRepository.findAllByTypeAndIsOpenTrue(PostType.CAMPAIGN.getValue()).stream().map(PostResDto::of).collect(Collectors.toList());
         return postResDtoList;
     }
 
