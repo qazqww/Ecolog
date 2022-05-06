@@ -40,7 +40,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<MyInfoResDto> myInfo(Authentication authentication) {
+    private ResponseEntity<MyInfoResDto> myInfo(@ApiIgnore Authentication authentication) {
 
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         User user = userDetails.getUser();
@@ -103,7 +103,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<?> delete(Authentication authentication) {
+    private ResponseEntity<?> delete(@ApiIgnore Authentication authentication) {
 
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         User user = userDetails.getUser();
