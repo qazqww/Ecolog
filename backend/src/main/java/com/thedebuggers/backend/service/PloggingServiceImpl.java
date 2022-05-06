@@ -5,7 +5,9 @@ import com.thedebuggers.backend.common.util.ErrorCode;
 import com.thedebuggers.backend.domain.entity.Plogging;
 import com.thedebuggers.backend.domain.entity.RankingData;
 import com.thedebuggers.backend.domain.entity.User;
+import com.thedebuggers.backend.domain.entity.UserFollow;
 import com.thedebuggers.backend.domain.repository.PloggingRepository;
+import com.thedebuggers.backend.domain.repository.UserFollowRepository;
 import com.thedebuggers.backend.domain.repository.UserRepository;
 import com.thedebuggers.backend.dto.PloggingReqDto;
 import com.thedebuggers.backend.dto.PloggingResDto;
@@ -27,6 +29,7 @@ public class PloggingServiceImpl implements PloggingService {
 
     private final PloggingRepository ploggingRepository;
     private final UserRepository userRepository;
+    private final UserFollowRepository userFollowRepository;
 
     private final S3Service s3Service;
 
@@ -94,7 +97,23 @@ public class PloggingServiceImpl implements PloggingService {
 
         ploggingRepository.getRankingByTime(startDay, endDay, RankingData.class).forEach(
                 data -> {
-                    User user = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+                    User user = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    rankingResDtoList.add(RankingResDto.of(user, data.getCnt(), data.getDist()));
+                }
+        );
+
+        return rankingResDtoList;
+    }
+
+    @Override
+    public List<RankingResDto> getRankingByFollow(User follower) {
+        List<RankingResDto> rankingResDtoList = new ArrayList<>();
+        List<User> followList = userFollowRepository.findAllFolloweeByFollower(follower);
+        followList.add(follower);
+
+        ploggingRepository.getRankingByFollow(followList, RankingData.class).forEach(
+                data -> {
+                    User user = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
                     rankingResDtoList.add(RankingResDto.of(user, data.getCnt(), data.getDist()));
                 }
         );

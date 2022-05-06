@@ -77,4 +77,18 @@ public class PloggingController {
         List<RankingResDto> rankingResDtoList = ploggingService.getRankingByTime(type);
         return ResponseEntity.ok(rankingResDtoList);
     }
+
+    @GetMapping("/rank/follow")
+    @ApiOperation(value = "플로깅 지인 랭킹")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<List<RankingResDto>> getRankingByFollow(@ApiIgnore Authentication authentication) {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+        List<RankingResDto> rankingResDtoList = ploggingService.getRankingByFollow(user);
+        return ResponseEntity.ok(rankingResDtoList);
+    }
 }

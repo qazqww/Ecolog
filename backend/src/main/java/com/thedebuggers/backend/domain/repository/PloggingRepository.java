@@ -1,6 +1,7 @@
 package com.thedebuggers.backend.domain.repository;
 
 import com.thedebuggers.backend.domain.entity.Plogging;
+import com.thedebuggers.backend.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +14,8 @@ public interface PloggingRepository extends JpaRepository<Plogging, Long> {
     @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where ended_at BETWEEN :startDay AND :endDay group by user_no order by dist desc",
             nativeQuery = true)
     <T> List<T> getRankingByTime(String startDay, String endDay, Class<T> type);
+
+    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in :userList group by user_no order by dist desc",
+            nativeQuery = true)
+    <T> List<T> getRankingByFollow(List<User> userList, Class<T> type);
 }
