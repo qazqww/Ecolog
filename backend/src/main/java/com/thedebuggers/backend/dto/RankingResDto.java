@@ -12,13 +12,13 @@ import lombok.Setter;
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class RankingResDto {
-    private ProfileResDto user;
+    private BaseUserInfoResDto user;
     private int cnt;
     private double dist;
 
     public static RankingResDto of(User user, int cnt, double dist) {
         return RankingResDto.builder()
-                .user(ProfileResDto.of(user))
+                .user(BaseUserInfoResDto.of(user))
                 .cnt(cnt)
                 .dist(dist)
                 .build();
