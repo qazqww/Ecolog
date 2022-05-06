@@ -46,6 +46,7 @@ public class PostServiceImpl implements PostService {
                 .image(imageUrl)
                 .createdAt(LocalDateTime.now())
                 .isOpen(postReqDto.isOpen())
+                .type(postReqDto.getType())
                 .community(communityRepository.findByNo(communityNo))
                 .user(user)
                 .build();
