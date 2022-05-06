@@ -18,4 +18,8 @@ public interface PloggingRepository extends JpaRepository<Plogging, Long> {
     @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in :userList group by user_no order by dist desc",
             nativeQuery = true)
     <T> List<T> getRankingByFollow(List<User> userList, Class<T> type);
+
+    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in (select u.no from user u where region = :region) group by user_no order by dist desc",
+            nativeQuery = true)
+    <T> List<T> getRankingByRegion(String region, Class<T> type);
 }

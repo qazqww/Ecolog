@@ -5,7 +5,6 @@ import com.thedebuggers.backend.common.util.ErrorCode;
 import com.thedebuggers.backend.domain.entity.Plogging;
 import com.thedebuggers.backend.domain.entity.RankingData;
 import com.thedebuggers.backend.domain.entity.User;
-import com.thedebuggers.backend.domain.entity.UserFollow;
 import com.thedebuggers.backend.domain.repository.PloggingRepository;
 import com.thedebuggers.backend.domain.repository.UserFollowRepository;
 import com.thedebuggers.backend.domain.repository.UserRepository;
@@ -97,8 +96,8 @@ public class PloggingServiceImpl implements PloggingService {
 
         ploggingRepository.getRankingByTime(startDay, endDay, RankingData.class).forEach(
                 data -> {
-                    User user = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
-                    rankingResDtoList.add(RankingResDto.of(user, data.getCnt(), data.getDist()));
+                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
                 }
         );
 
@@ -106,17 +105,32 @@ public class PloggingServiceImpl implements PloggingService {
     }
 
     @Override
-    public List<RankingResDto> getRankingByFollow(User follower) {
+    public List<RankingResDto> getRankingByFollow(User user) {
         List<RankingResDto> rankingResDtoList = new ArrayList<>();
-        List<User> followList = userFollowRepository.findAllFolloweeByFollower(follower);
-        followList.add(follower);
+        List<User> followList = userFollowRepository.findAllFolloweeByFollower(user);
+        followList.add(user);
 
         ploggingRepository.getRankingByFollow(followList, RankingData.class).forEach(
                 data -> {
-                    User user = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
-                    rankingResDtoList.add(RankingResDto.of(user, data.getCnt(), data.getDist()));
+                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
                 }
         );
+
+        return rankingResDtoList;
+    }
+
+    @Override
+    public List<RankingResDto> getRankingByRegion(User user) {
+        List<RankingResDto> rankingResDtoList = new ArrayList<>();
+//        String region = user.getRegion();
+
+//        ploggingRepository.getRankingByRegion(region, RankingData.class).forEach(
+//                data -> {
+//                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+//                    rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
+//                }
+//        );
 
         return rankingResDtoList;
     }
