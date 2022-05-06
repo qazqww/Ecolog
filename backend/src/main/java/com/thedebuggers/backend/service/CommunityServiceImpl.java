@@ -90,7 +90,7 @@ public class CommunityServiceImpl implements CommunityService{
 
         long userCount = userCommunityRepository.findCommunityCountByCommunityNo(communityNo);
 
-        return 0;
+        return userCount;
     }
 
     @Override
