@@ -10,6 +10,11 @@ export async function getUserInfo(userSeq: number) {
   return response.data;
 }
 
+export async function getUserPost(userSeq: number) {
+  const response = await Api.get<UserPostList>(`/user/${userSeq}/post`);
+  return response.data;
+}
+
 export interface User {
   email: string;
   name: string;
@@ -37,3 +42,25 @@ export interface UserProfile {
   login_type: string;
   no: number;
 }
+
+export interface Writer {
+  birth: string;
+  email: string;
+  image: string;
+  name: string;
+  nickname: string;
+  no: number;
+}
+
+export interface UserPost {
+  content: string;
+  created_at: string;
+  image: string;
+  like_count: number;
+  no: number;
+  open: boolean;
+  title: string;
+  writer: Writer;
+}
+
+export interface UserPostList extends Array<UserPost> {}
