@@ -99,11 +99,10 @@ public class PloggingController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<List<RankingResDto>> getRankingByRegion(@ApiIgnore Authentication authentication,
-                                                                   @ApiParam(value = "지역 이름", defaultValue = "구미") @RequestParam String region) {
+    private ResponseEntity<List<RankingResDto>> getRankingByAddress(@ApiIgnore Authentication authentication) {
         ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
         User user = userDetails.getUser();
-        List<RankingResDto> rankingResDtoList = ploggingService.getRankingByRegion(user);
+        List<RankingResDto> rankingResDtoList = ploggingService.getRankingByAddress(user);
         return ResponseEntity.ok(rankingResDtoList);
     }
 

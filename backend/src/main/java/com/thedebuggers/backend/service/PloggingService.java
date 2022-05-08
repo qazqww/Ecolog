@@ -19,5 +19,5 @@ public interface PloggingService {
 
     List<RankingResDto> getRankingByFollow(User user);
 
-    List<RankingResDto> getRankingByRegion(User user);
+    List<RankingResDto> getRankingByAddress(User user);
 }

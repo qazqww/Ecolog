@@ -121,16 +121,16 @@ public class PloggingServiceImpl implements PloggingService {
     }
 
     @Override
-    public List<RankingResDto> getRankingByRegion(User user) {
+    public List<RankingResDto> getRankingByAddress(User user) {
         List<RankingResDto> rankingResDtoList = new ArrayList<>();
-//        String region = user.getRegion();
-//
-//        ploggingRepository.getRankingByRegion(region, RankingData.class).forEach(
-//                data -> {
-//                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
-//                    rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
-//                }
-//        );
+        String address = user.getAddress();
+
+        ploggingRepository.getRankingByAddress(address, RankingData.class).forEach(
+                data -> {
+                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
+                }
+        );
 
         return rankingResDtoList;
     }

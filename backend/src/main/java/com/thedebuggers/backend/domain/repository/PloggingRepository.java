@@ -11,15 +11,15 @@ public interface PloggingRepository extends JpaRepository<Plogging, Long> {
 
     List<Plogging> findAllByUserNo(long userNo);
 
-    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where ended_at BETWEEN :startDay AND :endDay group by user_no order by dist desc",
+    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where ended_at BETWEEN :startDay AND :endDay group by user_no order by dist desc, cnt desc",
             nativeQuery = true)
     <T> List<T> getRankingByTime(String startDay, String endDay, Class<T> type);
 
-    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in :userList group by user_no order by dist desc",
+    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in :userList group by user_no order by dist desc, cnt desc",
             nativeQuery = true)
     <T> List<T> getRankingByFollow(List<User> userList, Class<T> type);
 
-    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in (select u.no from user u where region = :region) group by user_no order by dist desc",
+    @Query(value = "select user_no, count(*) cnt, sum(distance) dist from plogging where user_no in (select u.no from user u where address = :address) group by user_no order by dist desc, cnt desc",
             nativeQuery = true)
-    <T> List<T> getRankingByRegion(String region, Class<T> type);
+    <T> List<T> getRankingByAddress(String address, Class<T> type);
 }
