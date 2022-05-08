@@ -41,6 +41,13 @@ export async function getPloggingDetail(ploggingSeq: number) {
   return response.data;
 }
 
+export async function getTimeRanking(periodType: string) {
+  const response = await Api.get<PloggingRankList>(
+    `/plogging/rank/time?type=${periodType}`,
+  );
+  return response.data;
+}
+
 export interface PloggingInfo {
   calories: number;
   distance: number;
@@ -86,3 +93,20 @@ export interface PloggingDetail {
   time: number;
   user: User;
 }
+
+export interface RankingUser {
+  bitrh: string;
+  email: string;
+  image: string;
+  name: string;
+  nickname: string;
+  no: number;
+}
+
+export interface PloggingRank {
+  cnt: number;
+  dist: number;
+  user: RankingUser;
+}
+
+export interface PloggingRankList extends Array<PloggingRank> {}
