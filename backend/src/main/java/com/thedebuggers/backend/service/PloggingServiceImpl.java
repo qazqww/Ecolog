@@ -79,7 +79,7 @@ public class PloggingServiceImpl implements PloggingService {
 
         ploggingRepository.getRankingByTime(startDay, endDay, RankingData.class).forEach(
                 data -> {
-                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    User u = userRepository.findByNo(data.getUserNo()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
                     rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
                 }
         );
@@ -102,7 +102,7 @@ public class PloggingServiceImpl implements PloggingService {
 
         ploggingRepository.getRankingByFollow(followList, startDay, endDay, RankingData.class).forEach(
                 data -> {
-                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    User u = userRepository.findByNo(data.getUserNo()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
                     rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
                 }
         );
@@ -124,7 +124,7 @@ public class PloggingServiceImpl implements PloggingService {
 
         ploggingRepository.getRankingByAddress(address, startDay, endDay, RankingData.class).forEach(
                 data -> {
-                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
+                    User u = userRepository.findByNo(data.getUserNo()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));
                     rankingResDtoList.add(RankingResDto.of(u, data.getCnt(), data.getDist()));
                 }
         );
