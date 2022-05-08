@@ -124,7 +124,7 @@ public class PloggingServiceImpl implements PloggingService {
     public List<RankingResDto> getRankingByRegion(User user) {
         List<RankingResDto> rankingResDtoList = new ArrayList<>();
 //        String region = user.getRegion();
-
+//
 //        ploggingRepository.getRankingByRegion(region, RankingData.class).forEach(
 //                data -> {
 //                    User u = userRepository.findByNo(data.getUser_no()).orElseThrow(() -> new CustomException(ErrorCode.CONTENT_NOT_FOUND));

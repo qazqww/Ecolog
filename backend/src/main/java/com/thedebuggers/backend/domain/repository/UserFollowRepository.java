@@ -14,6 +14,9 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, Long> {
 
     Optional<UserFollow> findByFollowerAndFollowee(User follower, User followee);
 
-    @Query("select uf.followee from UserFollow uf where uf.follower = :follower")
+    @Query("select uc.followee from UserFollow uc where uc.follower = :follower")
     List<User> findAllFolloweeByFollower(User follower);
+
+    @Query("select uc.follower from UserFollow uc where uc.followee = :followee")
+    List<User> findAllFollowerByFollowee(User followee);
 }
