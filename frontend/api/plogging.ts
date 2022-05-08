@@ -48,6 +48,20 @@ export async function getTimeRanking(periodType: string) {
   return response.data;
 }
 
+export async function getFollowRanking(periodType: string) {
+  const response = await Api.get<PloggingRankList>(
+    `/plogging/rank/follow?type=${periodType}`,
+  );
+  return response.data;
+}
+
+export async function getRegionRanking(periodType: string) {
+  const response = await Api.get<PloggingRankList>(
+    `/plogging/rank/region?type=${periodType}`,
+  );
+  return response.data;
+}
+
 export interface PloggingInfo {
   calories: number;
   distance: number;
