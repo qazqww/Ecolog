@@ -11,6 +11,7 @@ import com.thedebuggers.backend.domain.repository.UserRepository;
 import com.thedebuggers.backend.dto.PloggingReqDto;
 import com.thedebuggers.backend.dto.PloggingResDto;
 import com.thedebuggers.backend.dto.RankingResDto;
+import com.thedebuggers.backend.dto.RegionProgressResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -130,6 +131,24 @@ public class PloggingServiceImpl implements PloggingService {
         );
 
         return rankingResDtoList;
+    }
+
+    @Override
+    public List<RegionProgressResDto> getRegionProgress(String type) {
+        List<RegionProgressResDto> regionProgressResDtoList = new ArrayList<>();
+
+        Map<String, String> dateInfo = getDate(type);
+        String startDay = dateInfo.get("startDay");
+        String endDay = dateInfo.get("endDay");
+
+        if (startDay.isEmpty() || endDay.isEmpty())
+            throw new CustomException(ErrorCode.BAD_REQUEST);
+
+        ploggingRepository.getRegionProgress(startDay, endDay, RankingData.class).forEach(
+                data -> regionProgressResDtoList.add(RegionProgressResDto.of(data))
+        );
+
+        return regionProgressResDtoList;
     }
 
     private Map<String, String> getDate(String type) {

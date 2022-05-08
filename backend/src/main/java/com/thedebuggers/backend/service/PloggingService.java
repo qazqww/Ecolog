@@ -4,6 +4,7 @@ import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.dto.PloggingReqDto;
 import com.thedebuggers.backend.dto.PloggingResDto;
 import com.thedebuggers.backend.dto.RankingResDto;
+import com.thedebuggers.backend.dto.RegionProgressResDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface PloggingService {
     List<RankingResDto> getRankingByFollow(User user, String type);
 
     List<RankingResDto> getRankingByAddress(User user, String type);
+
+    List<RegionProgressResDto> getRegionProgress(String type);
 }

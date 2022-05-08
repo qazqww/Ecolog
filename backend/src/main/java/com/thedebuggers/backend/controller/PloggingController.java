@@ -5,6 +5,7 @@ import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.dto.PloggingReqDto;
 import com.thedebuggers.backend.dto.PloggingResDto;
 import com.thedebuggers.backend.dto.RankingResDto;
+import com.thedebuggers.backend.dto.RegionProgressResDto;
 import com.thedebuggers.backend.service.PloggingService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -115,7 +116,8 @@ public class PloggingController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Server Error")
     })
-    private ResponseEntity<?> getProgressByRegion() {
-        return null;
+    private ResponseEntity<List<RegionProgressResDto>> getProgressByAddress(@ApiParam(value = "입력 키워드: all, month, week") @RequestParam String type) {
+        List<RegionProgressResDto> regionProgressResDtoList = ploggingService.getRegionProgress(type);
+        return ResponseEntity.ok(regionProgressResDtoList);
     }
 }
