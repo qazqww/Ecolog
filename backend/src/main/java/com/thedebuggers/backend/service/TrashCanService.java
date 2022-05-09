@@ -13,4 +13,6 @@ public interface TrashCanService {
     boolean registTrashCan(TrashCanReqDto trashCanReqDto, MultipartFile imageFile, User user) throws ParseException;
 
     List<TrashCanResDto> getTrashCanList(double lat, double lng, double range);
+
+    TrashCanResDto updateTrashCan(TrashCanReqDto trashCanReqDto, MultipartFile imageFile, User user) throws ParseException;
 }

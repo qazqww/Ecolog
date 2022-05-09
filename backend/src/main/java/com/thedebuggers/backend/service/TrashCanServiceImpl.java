@@ -1,6 +1,8 @@
 package com.thedebuggers.backend.service;
 
+import com.thedebuggers.backend.common.exception.CustomException;
 import com.thedebuggers.backend.common.util.Direction;
+import com.thedebuggers.backend.common.util.ErrorCode;
 import com.thedebuggers.backend.common.util.GeometryUtil;
 import com.thedebuggers.backend.common.util.Location;
 import com.thedebuggers.backend.domain.entity.TrashCan;
@@ -76,5 +78,34 @@ public class TrashCanServiceImpl implements TrashCanService{
         List<TrashCanResDto> trashCanResDtoList = trashCanList.stream().map(TrashCanResDto::of).collect(Collectors.toList());
 
         return trashCanResDtoList;
+    }
+
+    @Override
+    public TrashCanResDto updateTrashCan(TrashCanReqDto trashCanReqDto, MultipartFile imageFile, User user) throws ParseException {
+        String pointWKT = String.format("POINT(%s %s)", trashCanReqDto.getLng(), trashCanReqDto.getLat());
+        Geometry geometry = new WKTReader().read(pointWKT);
+        Point point = (Point) geometry;
+        point.setSRID(4326);
+
+        TrashCan trashCan = trashCanRepository.findByNo(trashCanReqDto.getNo()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
+        if (trashCan.getUser().getNo() != user.getNo()) {
+            throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
+        }
+
+        String imageUrl = null;
+        if (imageFile != null) {
+            imageUrl = s3Service.upload(imageFile);
+        }
+
+        trashCan.setAddress(trashCanReqDto.getAddress());
+        trashCan.setImage(imageUrl);
+        trashCan.setLocation(point);
+
+
+        TrashCan result = trashCanRepository.save(trashCan);
+        TrashCanResDto trashCanResDto = TrashCanResDto.of(result);
+
+        return trashCanResDto;
     }
 }

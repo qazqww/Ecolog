@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TrashCanRepository extends JpaRepository<TrashCan, Long> {
 
@@ -25,6 +26,7 @@ public interface TrashCanRepository extends JpaRepository<TrashCan, Long> {
     )
     void updatePoint(long no, Point point);
 
+    Optional<TrashCan> findByNo(long no);
 
 
 //    @Query(value = "SELECT * FROM trash_can tc where MBRContains(ST_LINESTRINGFROMTEXT(concat( :#{#pointFormat} ), 4326) , tc.location)", nativeQuery = true)

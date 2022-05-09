@@ -10,6 +10,8 @@ import lombok.*;
 @RequiredArgsConstructor
 public class TrashCanReqDto {
 
+    private long no;
+
     private String address;
     private double lat;
     private double lng;
