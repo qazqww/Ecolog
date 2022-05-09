@@ -1,14 +1,19 @@
 package com.thedebuggers.backend.service;
 
+import com.thedebuggers.backend.common.util.Direction;
+import com.thedebuggers.backend.common.util.GeometryUtil;
+import com.thedebuggers.backend.common.util.Location;
 import com.thedebuggers.backend.domain.entity.TrashCan;
 import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.domain.repository.TrashCanRepository;
+import com.thedebuggers.backend.dto.BaseUserInfoResDto;
 import com.thedebuggers.backend.dto.TrashCanReqDto;
 
-import jdk.jpackage.internal.Log;
+import com.thedebuggers.backend.dto.TrashCanResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Coordinate;
+
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -16,6 +21,9 @@ import org.locationtech.jts.io.WKTReader;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,16 +36,11 @@ public class TrashCanServiceImpl implements TrashCanService{
     @Override
     public boolean registTrashCan(TrashCanReqDto trashCanReqDto, MultipartFile imageFile, User user) throws ParseException {
 
-//        GeometryFactory geometryFactory = new GeometryFactory();
-//        Coordinate coordinate = new Coordinate(trashCanReqDto.getLat(), trashCanReqDto.getLng());
-//        Point point = geometryFactory.createPoint(coordinate);
-
         String pointWKT = String.format("POINT(%s %s)", trashCanReqDto.getLng(), trashCanReqDto.getLat());
-        Point point = (Point) new WKTReader().read(pointWKT);
+        Geometry geometry = new WKTReader().read(pointWKT);
+        Point point = (Point) geometry;
+        point.setSRID(4326);
 
-//        Point point = new Point(new Coordinate(trashCanReqDto.getLng(),trashCanReqDto.getLat()));
-
-        log.info(point.toString());
 
         String imageUrl = null;
         if (imageFile != null) {
@@ -45,16 +48,33 @@ public class TrashCanServiceImpl implements TrashCanService{
         }
 
         TrashCan trashCan = TrashCan.builder()
-                .location(point)
                 .address(trashCanReqDto.getAddress())
+                .location(point)
                 .image(imageUrl)
                 .user(user)
                 .build();
 
-        TrashCan trashCan1 = trashCanRepository.save(trashCan);
-
-        log.info("trashcan : {}", trashCan1.getLocation());
+        trashCanRepository.save(trashCan);
 
         return true;
+    }
+
+    @Override
+    public List<TrashCanResDto> getTrashCanList(double lat, double lng, double range) {
+
+        Location northEast = GeometryUtil.calculate(lat, lng, range, Direction.NORTHEAST.getBearing());
+        Location southWest = GeometryUtil.calculate(lat, lng, range, Direction.SOUTHWEST.getBearing());
+
+        double x1 = northEast.getLatitude();
+        double y1 = northEast.getLongitude();
+
+        double x2 = southWest.getLatitude();
+        double y2 = southWest.getLongitude();
+
+        List<TrashCan> trashCanList = trashCanRepository.getTrashCanList(x1, y1, x2, y2);
+
+        List<TrashCanResDto> trashCanResDtoList = trashCanList.stream().map(TrashCanResDto::of).collect(Collectors.toList());
+
+        return trashCanResDtoList;
     }
 }
