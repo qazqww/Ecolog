@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class TrashCanController {
         return ResponseEntity.ok(trashCanList);
     }
 
-    @PutMapping
+    @PutMapping("/{trashCanNo}")
     @ApiOperation(value = "쓰레기통 정보 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
@@ -72,13 +73,32 @@ public class TrashCanController {
     private ResponseEntity<TrashCanResDto> updateTrashCan(
             @RequestPart(value = "trash_can_info") TrashCanReqDto trashCanReqDto,
             @RequestPart(value = "image", required = false) MultipartFile imageFile,
-            Authentication authentication
+            @ApiIgnore Authentication authentication,
+            @PathVariable long trashCanNo
     ) throws ParseException{
         ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
         User user = userDetails.getUser();
 
-        TrashCanResDto trashCanResDto = trashCanService.updateTrashCan(trashCanReqDto, imageFile, user);
+        TrashCanResDto trashCanResDto = trashCanService.updateTrashCan(trashCanNo, trashCanReqDto, imageFile, user);
         return ResponseEntity.ok(trashCanResDto);
     }
 
+    @DeleteMapping("/{trashCanNo}")
+    @ApiOperation(value = "쓰레기통 정보 삭제")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<Boolean> deleteTrashCan(
+            @ApiIgnore Authentication authentication,
+            @PathVariable long trashCanNo
+    ) {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+
+        boolean result = trashCanService.deleteTrashCan(trashCanNo, user);
+
+        return ResponseEntity.ok(result);
+    }
 }

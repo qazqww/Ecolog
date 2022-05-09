@@ -8,7 +8,6 @@ import com.thedebuggers.backend.common.util.Location;
 import com.thedebuggers.backend.domain.entity.TrashCan;
 import com.thedebuggers.backend.domain.entity.User;
 import com.thedebuggers.backend.domain.repository.TrashCanRepository;
-import com.thedebuggers.backend.dto.BaseUserInfoResDto;
 import com.thedebuggers.backend.dto.TrashCanReqDto;
 
 import com.thedebuggers.backend.dto.TrashCanResDto;
@@ -81,13 +80,13 @@ public class TrashCanServiceImpl implements TrashCanService{
     }
 
     @Override
-    public TrashCanResDto updateTrashCan(TrashCanReqDto trashCanReqDto, MultipartFile imageFile, User user) throws ParseException {
+    public TrashCanResDto updateTrashCan(long trashCanNo, TrashCanReqDto trashCanReqDto, MultipartFile imageFile, User user) throws ParseException {
         String pointWKT = String.format("POINT(%s %s)", trashCanReqDto.getLng(), trashCanReqDto.getLat());
         Geometry geometry = new WKTReader().read(pointWKT);
         Point point = (Point) geometry;
         point.setSRID(4326);
 
-        TrashCan trashCan = trashCanRepository.findByNo(trashCanReqDto.getNo()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+        TrashCan trashCan = trashCanRepository.findByNo(trashCanNo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
         if (trashCan.getUser().getNo() != user.getNo()) {
             throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
@@ -107,5 +106,15 @@ public class TrashCanServiceImpl implements TrashCanService{
         TrashCanResDto trashCanResDto = TrashCanResDto.of(result);
 
         return trashCanResDto;
+    }
+
+    @Override
+    public boolean deleteTrashCan(long trashCanNo, User user) {
+        TrashCan trashCan = trashCanRepository.findByNo(trashCanNo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
+        if (trashCan.getUser().getNo() != user.getNo()) throw new CustomException(ErrorCode.CONTENT_UNAUTHORIZED);
+
+        trashCanRepository.delete(trashCan);
+        return true;
     }
 }
