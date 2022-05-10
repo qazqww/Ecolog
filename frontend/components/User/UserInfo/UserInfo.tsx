@@ -20,6 +20,12 @@ import {ActivityIndicator, Colors} from 'react-native-paper';
 
 const styles = (direction?: any, padding?: number, paddingBottom?: number) =>
   StyleSheet.create({
+    loadingContainer: {
+      width: '100%',
+      height: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     userContainer: {
       flexDirection: direction || 'column',
       padding: padding || 0,
