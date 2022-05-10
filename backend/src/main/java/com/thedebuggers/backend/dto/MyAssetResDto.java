@@ -13,6 +13,6 @@ import java.util.List;
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MyAssetResDto {
-    List<Integer> avatarList;
-    List<Integer> roomList;
+    List<Long> avatarList;
+    List<Long> roomList;
 }

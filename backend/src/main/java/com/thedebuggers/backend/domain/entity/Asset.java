@@ -2,26 +2,23 @@ package com.thedebuggers.backend.domain.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAsset {
+public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long no;
 
-    @ManyToOne
-    @JoinColumn(name = "user_no")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "asset_no")
-    private Asset asset;
+    private int type;
+    private int price;
 }

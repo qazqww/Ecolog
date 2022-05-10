@@ -2,20 +2,15 @@ package com.thedebuggers.backend.controller;
 
 import com.thedebuggers.backend.auth.ELUserDetails;
 import com.thedebuggers.backend.domain.entity.User;
+import com.thedebuggers.backend.dto.AssetReqDto;
 import com.thedebuggers.backend.dto.MyAssetResDto;
 import com.thedebuggers.backend.service.AssetService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "유니티 에셋 관련 API", tags = {"Asset"})
@@ -26,6 +21,21 @@ import springfox.documentation.annotations.ApiIgnore;
 public class AssetController {
 
     private final AssetService assetService;
+
+    @PostMapping
+    @ApiOperation(value = "에셋 구매")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    ResponseEntity<Boolean> buyAsset(@ApiIgnore Authentication authentication,
+                                     @ApiParam(value = "") @RequestBody AssetReqDto assetReqDto) {
+        ELUserDetails userDetails = (ELUserDetails)authentication.getDetails();
+        User user = userDetails.getUser();
+        boolean result = assetService.buyAsset(user, assetReqDto);
+        return ResponseEntity.ok(result);
+    }
 
     @GetMapping
     @ApiOperation(value = "보유 에셋 확인")
