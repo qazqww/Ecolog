@@ -58,10 +58,8 @@ public class UserServiceImpl implements UserService {
 
         UserAsset userAsset = UserAsset.builder().user(user).asset(assetRepository.findById(0L).orElse(null)).build();
         userAssetRepository.save(userAsset);
-        System.out.println(userAsset);
         userAsset = UserAsset.builder().user(user).asset(assetRepository.findById(0L + Constants.ROOM_ITEM_NO).orElse(null)).build();
         userAssetRepository.save(userAsset);
-        System.out.println(userAsset);
 
         return user;
     }
