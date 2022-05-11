@@ -186,6 +186,7 @@ public class UserServiceImpl implements UserService {
                 .phone(user.getPhone())
                 .image(user.getImage())
                 .address(user.getAddress())
+                .coin(user.getCoin())
                 .avatar(user.getAvatar())
                 .room(user.getRoom())
                 .loginType(user.getLoginType())
