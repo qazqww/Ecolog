@@ -16,6 +16,8 @@ public interface PloggingService {
 
     PloggingResDto getPlogging(long ploggingNo);
 
+    RankingResDto getMyRanking(User user);
+
     List<RankingResDto> getRankingByTime(String type);
 
     List<RankingResDto> getRankingByFollow(User user, String type);

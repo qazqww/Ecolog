@@ -67,6 +67,20 @@ public class PloggingController {
         return ResponseEntity.ok(ploggingResDto);
     }
 
+    @GetMapping("/rank/myrank")
+    @ApiOperation(value = "내 랭킹 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Server Error")
+    })
+    private ResponseEntity<RankingResDto> getMyRanking(@ApiIgnore Authentication authentication) {
+        ELUserDetails userDetails = (ELUserDetails) authentication.getDetails();
+        User user = userDetails.getUser();
+        RankingResDto rankingResDto = ploggingService.getMyRanking(user);
+        return ResponseEntity.ok(rankingResDto);
+    }
+
     @GetMapping("/rank/time")
     @ApiOperation(value = "플로깅 기간 별 랭킹")
     @ApiResponses({

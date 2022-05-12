@@ -69,6 +69,32 @@ public class PloggingServiceImpl implements PloggingService {
     }
 
     @Override
+    public RankingResDto getMyRanking(User user) {
+
+        List<RankingResDto> rankingResDtoList = getRankingByTime("all");
+        RankingResDto myRanking = null;
+
+        int rank = 0;
+        for (RankingResDto r : rankingResDtoList) {
+            rank++;
+            if (r.getUser().getNo() == user.getNo()) {
+                try {
+                    myRanking = (RankingResDto) r.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new CustomException(ErrorCode.BAD_REQUEST);
+                }
+                myRanking.setNo(rank);
+                break;
+            }
+        }
+
+        if (myRanking == null)
+            throw new CustomException(ErrorCode.CONTENT_EMPTY);
+
+        return myRanking;
+    }
+
+    @Override
     public List<RankingResDto> getRankingByTime(String type) {
         List<RankingResDto> rankingResDtoList = new ArrayList<>();
 
