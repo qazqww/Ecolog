@@ -67,8 +67,6 @@ public class CampaignServiceImpl implements CampaignService{
 
         userCampaignRepository.save(userCampaign);
 
-        userRepository.updateCoinByNo(user.getNo(), user.getCoin() + Reward.CAMPAIGN_REWARD.getPoint());
-
         List<User> userList = userCampaignRepository.findAllUserByCampaignNo(campaign.getNo());
 
         CampaignResDto campaignResDto = CampaignResDto.of(campaign, userList);

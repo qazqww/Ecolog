@@ -52,7 +52,7 @@ public class PloggingServiceImpl implements PloggingService {
 
         plogging = ploggingRepository.save(plogging);
 
-        int point = user.getCoin() + ((int) Math.round(plogging.getDistance())) * Reward.PLOGGING_REWARD.getPoint();
+        int point = ((int) Math.round(plogging.getDistance())) * Reward.PLOGGING_REWARD.getPoint();
 
         userRepository.updateCoinByNo(user.getNo(), point);
 

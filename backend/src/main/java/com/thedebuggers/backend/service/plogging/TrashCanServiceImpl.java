@@ -62,7 +62,7 @@ public class TrashCanServiceImpl implements TrashCanService{
 
         trashCanRepository.save(trashCan);
 
-        userRepository.updateCoinByNo(user.getNo(), user.getCoin() + Reward.TRASH_CAN_REWARD.getPoint());
+        userRepository.updateCoinByNo(user.getNo(), Reward.TRASH_CAN_REWARD.getPoint());
         return true;
     }
 
