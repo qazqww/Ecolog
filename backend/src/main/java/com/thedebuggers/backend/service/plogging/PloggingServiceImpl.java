@@ -15,6 +15,7 @@ import com.thedebuggers.backend.dto.user.RankingResDto;
 import com.thedebuggers.backend.common.util.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ public class PloggingServiceImpl implements PloggingService {
 
     private final S3Service s3Service;
 
+    @Transactional
     @Override
     public PloggingResDto registPlogging(User user, PloggingReqDto ploggingReqDto, List<MultipartFile> imageFileList) {
 
