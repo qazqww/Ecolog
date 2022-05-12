@@ -26,12 +26,21 @@ export type MainTabRouteProp = RouteProp<RootStackParamList, 'Main'>;
 export type RootStackParamList = {
   Main: MainTabNavigationScreenParams;
   PloggingMap: undefined;
-  PloggingResult: undefined;
+  PloggingResult: {
+    id: number;
+  };
   PloggingRanking: undefined;
   PloggingRecord: {
     id: number;
   };
   UserEdit: undefined;
+  UserProfile: {
+    id: number;
+  };
+  UserFollow: {
+    userId: number;
+    index: number;
+  };
   CommunityHome: undefined;
   CommunityCreate: undefined;
   CampaignDetail: undefined;
