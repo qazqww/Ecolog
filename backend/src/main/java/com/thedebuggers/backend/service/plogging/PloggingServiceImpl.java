@@ -5,6 +5,7 @@ import com.thedebuggers.backend.common.util.ErrorCode;
 import com.thedebuggers.backend.common.util.S3Service;
 import com.thedebuggers.backend.domain.entity.plogging.Plogging;
 import com.thedebuggers.backend.domain.entity.user.RankingData;
+import com.thedebuggers.backend.domain.entity.user.Reward;
 import com.thedebuggers.backend.domain.entity.user.User;
 import com.thedebuggers.backend.domain.repository.plogging.PloggingRepository;
 import com.thedebuggers.backend.domain.repository.user.UserFollowRepository;
@@ -51,6 +52,11 @@ public class PloggingServiceImpl implements PloggingService {
                 .build();
 
         plogging = ploggingRepository.save(plogging);
+
+        int point = ((int) Math.round(plogging.getDistance())) * Reward.PLOGGING_REWARD.getPoint();
+
+        userRepository.updateCoinByNo(user.getNo(), point);
+
         PloggingResDto ploggingResDto = PloggingResDto.of(plogging);
         return ploggingResDto;
     }
