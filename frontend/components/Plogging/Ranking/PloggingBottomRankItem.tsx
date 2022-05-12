@@ -1,8 +1,12 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+// Hooks
 import {useSelector} from 'react-redux';
+// Api & Types
 import {PloggingRank} from '../../../api/plogging';
 import {RootState} from '../../../modules';
+// Components
+import {Text, View, StyleSheet, Image} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const styles = (color?: any) =>
   StyleSheet.create({
@@ -12,8 +16,8 @@ const styles = (color?: any) =>
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: 20,
-      borderColor: '#696969',
-      borderBottomWidth: 0.5,
+      borderColor: '#aaaaaa',
+      borderBottomWidth: 0.2,
       backgroundColor: color || 'none',
     },
     itemContainer: {
@@ -25,6 +29,18 @@ const styles = (color?: any) =>
       width: 22,
       marginRight: 10,
       alignItems: 'center',
+    },
+    profileImgBox: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      marginRight: 8,
+      elevation: 3,
+    },
+    profileImg: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
     },
   });
 
@@ -49,19 +65,29 @@ function PloggingBottomRankItem({rank, rankData}: PloggingBottomRankItemProps) {
     <View>
       {/* 본인 랭킹 */}
       {myInfo.data && rankData.user.no === myInfo.data.no && (
-        <View style={styles('rgba(47, 235, 63, 0.5)').mainContainer}>
+        <LinearGradient
+          colors={['rgba(123, 255, 176, 0.7)', 'rgba(125, 190, 255, 0.7)']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={styles().mainContainer}>
           <View style={styles().itemContainer}>
             <View style={styles().rankBox}>
-              <Text style={fontStyles(18, '600').rankText}>{rank}</Text>
+              <Text style={fontStyles(16, '600').rankText}>{rank}</Text>
+            </View>
+            <View style={styles().profileImgBox}>
+              <Image
+                style={styles().profileImg}
+                source={{uri: rankData.user.image}}
+              />
             </View>
             <Text style={fontStyles(null, '600').rankText}>
               {rankData.user.name}
             </Text>
           </View>
-          <Text style={fontStyles(13, null, '#636363').rankText}>
+          <Text style={fontStyles(11, null, '#000000').rankText}>
             {`${rankData.cnt}회 / ${rankData.dist}km`}
           </Text>
-        </View>
+        </LinearGradient>
       )}
 
       {/* 타인 랭킹 */}
@@ -69,13 +95,19 @@ function PloggingBottomRankItem({rank, rankData}: PloggingBottomRankItemProps) {
         <View style={styles().mainContainer}>
           <View style={styles().itemContainer}>
             <View style={styles().rankBox}>
-              <Text style={fontStyles(18, '600').rankText}>{rank}</Text>
+              <Text style={fontStyles(16, '600').rankText}>{rank}</Text>
+            </View>
+            <View style={styles().profileImgBox}>
+              <Image
+                style={styles().profileImg}
+                source={{uri: rankData.user.image}}
+              />
             </View>
             <Text style={fontStyles(null, '600').rankText}>
               {rankData.user.name}
             </Text>
           </View>
-          <Text style={fontStyles(13, null, '#636363').rankText}>
+          <Text style={fontStyles(11, null, '#636363').rankText}>
             {`${rankData.cnt}회 / ${rankData.dist}km`}
           </Text>
         </View>
