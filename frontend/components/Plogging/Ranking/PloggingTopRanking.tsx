@@ -1,8 +1,11 @@
 import React from 'react';
+// Hooks
+import {useNavigation} from '@react-navigation/native';
 // Api & Types
 import {PloggingRankList} from '../../../api/plogging';
+import {RootStackNavigationProp} from '../../../screens/types';
 // Components
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 const styles = (
   width?: any,
@@ -92,6 +95,8 @@ interface PloggingTopRankingProps {
 }
 
 function PloggingTopRanking({rankDataList}: PloggingTopRankingProps) {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   return (
     <View style={styles().mainContainer}>
       <View style={styles().rankTitleContainer}>
@@ -104,33 +109,38 @@ function PloggingTopRanking({rankDataList}: PloggingTopRankingProps) {
         <Text style={fontStyles(18, '600').rankText}>명예의 전당</Text>
       </View>
       <View style={styles().rankerContainer}>
-        <View style={styles().itemContainer}>
-          {rankDataList.length >= 2 && (
-            <>
-              <View style={styles(70, 70, 35, '#DBDBDB', 10).imgBox}>
-                <Image
-                  style={styles(62, 62, 31).img}
-                  source={{
-                    uri: rankDataList[1].user.image,
-                  }}
-                />
+        {rankDataList.length >= 2 && (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() =>
+              navigation.push('UserProfile', {id: rankDataList[1].user.no})
+            }
+            style={styles().itemContainer}>
+            <View style={styles(70, 70, 35, '#DBDBDB', 10).imgBox}>
+              <Image
+                style={styles(62, 62, 31).img}
+                source={{
+                  uri: rankDataList[1].user.image,
+                }}
+              />
+            </View>
+            <View style={styles().rankerNameBox}>
+              <View style={styles(16, 16, 8, '#DBDBDB').rankNumberBox}>
+                <Text style={fontStyles(10, '600').normalText}>2</Text>
               </View>
-              <View style={styles().rankerNameBox}>
-                <View style={styles(16, 16, 8, '#DBDBDB').rankNumberBox}>
-                  <Text style={fontStyles(10, '600').normalText}>2</Text>
-                </View>
-                <Text style={fontStyles(16, '600').normalText}>
-                  {rankDataList[1].user.name}
-                </Text>
-              </View>
-              <Text style={fontStyles(10, null, '#636363').normalText}>
-                {`${rankDataList[1].cnt}회 / ${
-                  Math.round(rankDataList[1].dist * 100) / 100
-                }km`}
+              <Text style={fontStyles(16, '600').normalText}>
+                {rankDataList[1].user.name}
               </Text>
-            </>
-          )}
-          {rankDataList.length < 2 && (
+            </View>
+            <Text style={fontStyles(10, null, '#636363').normalText}>
+              {`${rankDataList[1].cnt}회 / ${
+                Math.round(rankDataList[1].dist * 100) / 100
+              }km`}
+            </Text>
+          </TouchableOpacity>
+        )}
+        {rankDataList.length < 2 && (
+          <View style={styles().itemContainer}>
             <View style={styles(70, 70, 35, '#DBDBDB', 10).imgBox}>
               <Image
                 style={styles(62, 62, 31).img}
@@ -139,35 +149,40 @@ function PloggingTopRanking({rankDataList}: PloggingTopRankingProps) {
                 }}
               />
             </View>
-          )}
-        </View>
-        <View style={styles().itemContainer}>
-          {rankDataList.length >= 1 && (
-            <>
-              <View style={styles(80, 80, 40, '#ffec99').imgBox}>
-                <Image
-                  style={styles(72, 72, 36).img}
-                  source={{
-                    uri: rankDataList[0].user.image,
-                  }}
-                />
+          </View>
+        )}
+        {rankDataList.length >= 1 && (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() =>
+              navigation.push('UserProfile', {id: rankDataList[0].user.no})
+            }
+            style={styles().itemContainer}>
+            <View style={styles(80, 80, 40, '#ffec99').imgBox}>
+              <Image
+                style={styles(72, 72, 36).img}
+                source={{
+                  uri: rankDataList[0].user.image,
+                }}
+              />
+            </View>
+            <View style={styles().rankerNameBox}>
+              <View style={styles(16, 16, 8, '#F1DB6A').rankNumberBox}>
+                <Text style={fontStyles(10, '600').normalText}>1</Text>
               </View>
-              <View style={styles().rankerNameBox}>
-                <View style={styles(16, 16, 8, '#F1DB6A').rankNumberBox}>
-                  <Text style={fontStyles(10, '600').normalText}>1</Text>
-                </View>
-                <Text style={fontStyles(16, '600').normalText}>
-                  {rankDataList[0].user.name}
-                </Text>
-              </View>
-              <Text style={fontStyles(10, null, '#636363').normalText}>
-                {`${rankDataList[0].cnt}회 / ${
-                  Math.round(rankDataList[0].dist * 100) / 100
-                }km`}
+              <Text style={fontStyles(16, '600').normalText}>
+                {rankDataList[0].user.name}
               </Text>
-            </>
-          )}
-          {rankDataList.length === 0 && (
+            </View>
+            <Text style={fontStyles(10, null, '#636363').normalText}>
+              {`${rankDataList[0].cnt}회 / ${
+                Math.round(rankDataList[0].dist * 100) / 100
+              }km`}
+            </Text>
+          </TouchableOpacity>
+        )}
+        {rankDataList.length === 0 && (
+          <View style={styles().itemContainer}>
             <View style={styles(80, 80, 40, '#ffec99').imgBox}>
               <Image
                 style={styles(72, 72, 36).img}
@@ -176,35 +191,40 @@ function PloggingTopRanking({rankDataList}: PloggingTopRankingProps) {
                 }}
               />
             </View>
-          )}
-        </View>
-        <View style={styles().itemContainer}>
-          {rankDataList.length >= 3 && (
-            <>
-              <View style={styles(70, 70, 35, '#D4A590', 10).imgBox}>
-                <Image
-                  style={styles(62, 62, 31).img}
-                  source={{
-                    uri: rankDataList[2].user.image,
-                  }}
-                />
+          </View>
+        )}
+        {rankDataList.length >= 3 && (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() =>
+              navigation.push('UserProfile', {id: rankDataList[2].user.no})
+            }
+            style={styles().itemContainer}>
+            <View style={styles(70, 70, 35, '#D4A590', 10).imgBox}>
+              <Image
+                style={styles(62, 62, 31).img}
+                source={{
+                  uri: rankDataList[2].user.image,
+                }}
+              />
+            </View>
+            <View style={styles().rankerNameBox}>
+              <View style={styles(16, 16, 8, '#D4A590').rankNumberBox}>
+                <Text style={fontStyles(10, '600').normalText}>3</Text>
               </View>
-              <View style={styles().rankerNameBox}>
-                <View style={styles(16, 16, 8, '#D4A590').rankNumberBox}>
-                  <Text style={fontStyles(10, '600').normalText}>3</Text>
-                </View>
-                <Text style={fontStyles(16, '600').normalText}>
-                  {rankDataList[2].user.name}
-                </Text>
-              </View>
-              <Text style={fontStyles(10, null, '#636363').normalText}>
-                {`${rankDataList[2].cnt}회 / ${
-                  Math.round(rankDataList[2].dist * 100) / 100
-                }km`}
+              <Text style={fontStyles(16, '600').normalText}>
+                {rankDataList[2].user.name}
               </Text>
-            </>
-          )}
-          {rankDataList.length < 3 && (
+            </View>
+            <Text style={fontStyles(10, null, '#636363').normalText}>
+              {`${rankDataList[2].cnt}회 / ${
+                Math.round(rankDataList[2].dist * 100) / 100
+              }km`}
+            </Text>
+          </TouchableOpacity>
+        )}
+        {rankDataList.length < 3 && (
+          <View style={styles().itemContainer}>
             <View style={styles(70, 70, 35, '#D4A590', 10).imgBox}>
               <Image
                 style={styles(62, 62, 31).img}
@@ -213,8 +233,8 @@ function PloggingTopRanking({rankDataList}: PloggingTopRankingProps) {
                 }}
               />
             </View>
-          )}
-        </View>
+          </View>
+        )}
       </View>
     </View>
   );

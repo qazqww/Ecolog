@@ -1,15 +1,20 @@
 import React from 'react';
 // Hooks
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 // Api & Types
 import {PloggingRank} from '../../../api/plogging';
 import {RootState} from '../../../modules';
+import {RootStackNavigationProp} from '../../../screens/types';
 // Components
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const styles = (color?: any) =>
   StyleSheet.create({
+    touchableContainer: {
+      width: '100%',
+    },
     mainContainer: {
       width: '100%',
       flexDirection: 'row',
@@ -61,38 +66,48 @@ interface PloggingBottomRankItemProps {
 
 function PloggingBottomRankItem({rank, rankData}: PloggingBottomRankItemProps) {
   const myInfo = useSelector((state: RootState) => state.user.user);
+  const navigation = useNavigation<RootStackNavigationProp>();
+
   return (
     <View>
       {/* 본인 랭킹 */}
       {myInfo.data && rankData.user.no === myInfo.data.no && (
-        <LinearGradient
-          colors={['rgba(123, 255, 176, 0.7)', 'rgba(125, 190, 255, 0.7)']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          style={styles().mainContainer}>
-          <View style={styles().itemContainer}>
-            <View style={styles().rankBox}>
-              <Text style={fontStyles(16, '600').rankText}>{rank}</Text>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.push('UserProfile', {id: rankData.user.no})}
+          style={styles().touchableContainer}>
+          <LinearGradient
+            colors={['rgba(123, 255, 176, 0.7)', 'rgba(125, 190, 255, 0.7)']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            style={styles().mainContainer}>
+            <View style={styles().itemContainer}>
+              <View style={styles().rankBox}>
+                <Text style={fontStyles(16, '600').rankText}>{rank}</Text>
+              </View>
+              <View style={styles().profileImgBox}>
+                <Image
+                  style={styles().profileImg}
+                  source={{uri: rankData.user.image}}
+                />
+              </View>
+              <Text style={fontStyles(null, '600').rankText}>
+                {rankData.user.name}
+              </Text>
             </View>
-            <View style={styles().profileImgBox}>
-              <Image
-                style={styles().profileImg}
-                source={{uri: rankData.user.image}}
-              />
-            </View>
-            <Text style={fontStyles(null, '600').rankText}>
-              {rankData.user.name}
+            <Text style={fontStyles(11, null, '#000000').rankText}>
+              {`${rankData.cnt}회 / ${rankData.dist}km`}
             </Text>
-          </View>
-          <Text style={fontStyles(11, null, '#000000').rankText}>
-            {`${rankData.cnt}회 / ${rankData.dist}km`}
-          </Text>
-        </LinearGradient>
+          </LinearGradient>
+        </TouchableOpacity>
       )}
 
       {/* 타인 랭킹 */}
       {myInfo.data && rankData.user.no !== myInfo.data.no && (
-        <View style={styles().mainContainer}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.push('UserProfile', {id: rankData.user.no})}
+          style={styles().mainContainer}>
           <View style={styles().itemContainer}>
             <View style={styles().rankBox}>
               <Text style={fontStyles(16, '600').rankText}>{rank}</Text>
@@ -110,7 +125,7 @@ function PloggingBottomRankItem({rank, rankData}: PloggingBottomRankItemProps) {
           <Text style={fontStyles(11, null, '#636363').rankText}>
             {`${rankData.cnt}회 / ${rankData.dist}km`}
           </Text>
-        </View>
+        </TouchableOpacity>
       )}
     </View>
   );

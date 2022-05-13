@@ -54,10 +54,9 @@ function PloggingRankingInfo() {
       )}
       {!myRank.isFetching && (
         <>
-          <Text
-            style={
-              fontStyles(14, 'bold', '#000000').normalText
-            }>{`${myRank.data?.ranking}위`}</Text>
+          <Text style={fontStyles(14, 'bold', '#000000').normalText}>{`${
+            myRank.data?.ranking ? myRank.data?.ranking : ' - '
+          }위`}</Text>
           <LinearGradient
             colors={['#00F260', '#0575E6']}
             style={styles().imageContainer}>

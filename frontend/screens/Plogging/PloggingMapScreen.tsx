@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 // Hooks
-import {useMutation} from 'react-query';
+import {useMutation, useQueryClient} from 'react-query';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 // Api & Types
@@ -27,12 +27,24 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Dialog, Portal, Provider, Snackbar} from 'react-native-paper';
+import {ActivityIndicator, Colors} from 'react-native-paper';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoiaGF1bCIsImEiOiJjbDI5cTV2NzMwMW9kM2JvYjF0c29sb2hkIn0.jcIu6fuVVbuJPVGaunycOw',
 );
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 20,
+    color: Colors.blueA100,
+    marginTop: 10,
+  },
   page: {
     flex: 1,
   },
@@ -302,8 +314,10 @@ function PloggingMapScreen({navigation}: any) {
   // 인증 사진 촬영
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const {mutate: save, isLoading} = useMutation(savePlogging, {
     onSuccess: data => {
+      queryClient.invalidateQueries('myRank');
       if (user.data) {
         dispatch(ploggingActions.getPloggingListAsync.request(user.data.no));
       }
@@ -426,6 +440,15 @@ function PloggingMapScreen({navigation}: any) {
     return true;
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator animating={true} size={48} color={Colors.blueA100} />
+        <Text style={styles.loadingText}>플로깅 기록하는 중</Text>
+      </View>
+    );
+  }
+
   return (
     <Provider>
       <View style={styles.page}>
@@ -525,7 +548,7 @@ function PloggingMapScreen({navigation}: any) {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.buttonFlex}
-                    activeOpacity={0.5}
+                    activeOpacity={0.6}
                     onPress={() => navigation.pop()}>
                     <Icon name="reply" size={22} color="#5FA2E5" />
                     <Text style={fontStyles(22, '600').textStyle}>포기</Text>
@@ -534,7 +557,7 @@ function PloggingMapScreen({navigation}: any) {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.buttonFlex}
-                    activeOpacity={0.5}
+                    activeOpacity={0.6}
                     onPress={() => setBackDialog(false)}>
                     <Icon name="directions-run" size={22} color="#5FA2E5" />
                     <Text style={fontStyles(22, '600').textStyle}>계속</Text>
@@ -553,7 +576,7 @@ function PloggingMapScreen({navigation}: any) {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.buttonFlex}
-                    activeOpacity={0.5}
+                    activeOpacity={0.6}
                     onPress={requestPermissions}>
                     <Icon name="assistant-photo" size={22} color="#5FA2E5" />
                     <Text style={fontStyles(22, '600').textStyle}>완료</Text>
@@ -562,7 +585,7 @@ function PloggingMapScreen({navigation}: any) {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.buttonFlex}
-                    activeOpacity={0.5}
+                    activeOpacity={0.6}
                     onPress={() => setFinishDialog(false)}>
                     <Icon name="directions-run" size={22} color="#5FA2E5" />
                     <Text style={fontStyles(22, '600').textStyle}>계속</Text>
