@@ -1,4 +1,6 @@
-# 뷰티플로거
+# 에코로그
+
+![Ecolog](https://lab.ssafy.com/s06-final/S06P31D101/-/wikis/uploads/68284a6816933dfea49dcaf5947a90cb/%EC%A0%9C%EB%AA%A9_%EC%97%86%EC%9D%8C-1.png)
 
 **건강한 지구를 만드는 아름다운 기록 ‘에코로그’**
 
