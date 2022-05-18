@@ -9,7 +9,7 @@ const color = {
   },
   gray: {
     default: "#d1d1d1",
-    light: "#eeeeee",
+    light: "#fbfbfd",
     semidark: "#c0c0c0",
     dark: "#a0a0a0",
     darker: "#767676",

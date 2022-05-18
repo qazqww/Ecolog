@@ -118,7 +118,6 @@ const PromotionContent = () => {
               </ContentH1>
               <ContentP>
                 플로깅을 아시나요? <br />
-
               </ContentP>
             </ContentTitle>
           </SubContent>

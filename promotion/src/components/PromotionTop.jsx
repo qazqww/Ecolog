@@ -33,7 +33,6 @@ const HomeTextFrame = styled.div`
 const TextDiv = styled.div`
   display: flex;
   flex-direction: column;
-  /* font-weight: 700; */
   margin-left: 60px;
   margin-bottom: 60px;
   z-index: 1;
@@ -101,8 +100,8 @@ const PromotionTop = () => {
   }, []);
 
   return (
-    <Container style={{ height: window.innerHeight * 0.95 }}>
-      <ContainerBox style={{ height: window.innerHeight * 0.95 }}>
+    <Container style={{ height: window.innerHeight * 0.9 }}>
+      <ContainerBox style={{ height: window.innerHeight * 0.9 }}>
 
         <HomeTextFrame>
           <TextDiv>
