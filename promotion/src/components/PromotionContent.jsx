@@ -237,14 +237,14 @@ const PromotionContent = () => {
             </Fade>
             <ContentTitle data-aos="fade-up">
               <ContentH1>
-                플로깅
+                커뮤니티
               </ContentH1>
               <ContentP>
-                플로깅을 아시나요? <br />
-                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
-                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
-                에코로그에서 플로깅을 기록하고, <br />
-                다른 사람에게 공유해보세요!<br />
+                온라인으로 연결된 곳이라면 지구 안 어디서든 무료! <br />
+                나의 일상 혹은 다양한 환경 캠페인에 참여하고 <br />
+                다른 사람들과 공유하세요. <br />
+                건강한 지구를 위한 당신의 행동이 <br />
+                다른 누군가의 모범이 될 수 있습니다. <br />
               </ContentP>
             </ContentTitle>
           </SubContent>
@@ -253,13 +253,13 @@ const PromotionContent = () => {
           <SubContent>
             <ContentTitle data-aos="fade-up">
               <ContentH1>
-                플로깅
+                에코지수 테스트
               </ContentH1>
               <ContentP>
-                플로깅을 아시나요? <br />
-                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
-                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
-                에코로그에서 플로깅을 기록하고, <br />
+                당신은 환경에 관심이 많나요? <br />
+                당신의 환경에 대한 평소 생활 습관을 통해 <br />
+                자신을 되돌아 볼 수 있습니다. <br />
+                높은 점수를 획득하고 <br />
                 다른 사람에게 공유해보세요!<br />
               </ContentP>
             </ContentTitle>
@@ -361,14 +361,14 @@ const PromotionContent = () => {
             </Fade>
             <ContentTitle data-aos="fade-up">
               <ContentH1>
-                플로깅
+                아바타 꾸미기
               </ContentH1>
               <ContentP>
-                플로깅을 아시나요? <br />
-                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
-                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
-                에코로그에서 플로깅을 기록하고, <br />
-                다른 사람에게 공유해보세요!<br />
+                에코로그의 플로깅 혹은 <br />
+                다양한 환경 캠페인에 참여하면 <br />
+                아바타와 공간을 살 수 있는 리워드를 지급합니다. <br />
+                나만의 아바타를 사고 <br />
+                나만의 공간을 꾸며보세요! <br />
               </ContentP>
             </ContentTitle>
           </SubContent>
