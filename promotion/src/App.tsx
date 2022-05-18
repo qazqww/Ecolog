@@ -12,6 +12,9 @@ import PromotionEcolog from './components/PromotionEcolog';
 
 const AppDiv = styled.div`
   backgroud-color: ${color.white.default};
+  font-family: omnigothic, sans-serif;
+  font-weight: 500;
+  font-style: normal;
 `;
 
 

@@ -5,9 +5,20 @@ import color from "../common/thema";
 import { Fade } from "react-awesome-reveal";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Carousel from 'react-bootstrap/Carousel'
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from "swiper";
+import { Controller } from 'swiper';
+import 'swiper/css';
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 
 import image1 from "../asset/image/ecolog1.png";
+import phonex from "../asset/image/phonex.png"
 
+SwiperCore.use([Navigation, Pagination]);
 
 const Container = styled.div`
   display: flex;
@@ -58,7 +69,7 @@ const ContentTitle = styled.div`
 
 const ContentH1 = styled.h1`
   font-size: 46px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   line-height: 1.3;
   font-weight: bold;
   color: ${color.black.default};
@@ -68,12 +79,11 @@ const ContentH1 = styled.h1`
 `;
 
 const ContentP = styled.p`
-  font-size: 27px;
+  font-size: 20px;
   line-height: 1.6;
-  color: ${color.black.default};
+  color: ${color.gray.dark};
   @media (max-width: 768px) {
     font-size: 18px;
-    line-height: 1.5;
   }
 `;
 
@@ -85,15 +95,26 @@ const ContentImageContainer = styled.div`
 `;
 
 const ContentImage = styled.img`
-  width: 520px;
+  width: 360px;
   @media (max-width: 768px) {
     width: 100%;
     margin-bottom: 20px;
   }
 `;
 
+const SwiperContainer = styled.div`
+  width: 540px;
+`;
+
 
 const PromotionContent = () => {
+
+  const [index, setIndex] = useState(0);
+  const [controlledSwiper, setControlledSwiper] = useState(null);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
 
   useEffect(() => {
     AOS.init({
@@ -106,37 +127,252 @@ const PromotionContent = () => {
       <ContentContainer>
         <Content>
           <SubContent>
-            <ContentTitle>
-              <ContentH1 data-aos="fade-up">
-                지구를 지키는 <br />
-                우리의 <br />
-                아름다운 기록 <br />
+            <ContentTitle data-aos="fade-up">
+              <ContentH1>
+                플로깅
               </ContentH1>
+              <ContentP>
+                플로깅을 아시나요? <br />
+                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
+                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
+                에코로그에서 플로깅을 기록하고, <br />
+                다른 사람에게 공유해보세요!<br />
+              </ContentP>
             </ContentTitle>
             <Fade>
-              <ContentImageContainer>
-                <ContentImage src={image1}></ContentImage>
-              </ContentImageContainer>
+              <SwiperContainer>
+                <Swiper
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  scrollbar={{ draggable: true }}
+                  navigation
+                  pagination={{ clickable: true }}
+                  modules={[Controller]}
+                  controller={{ control: controlledSwiper }}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+                >
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                </Swiper>
+              </SwiperContainer>
             </Fade>
           </SubContent>
         </Content>
-        <Fade>
-          <Content>
-            <SubContent>
-              <ContentImageContainer>
-                <ContentImage src={image1}></ContentImage>
-              </ContentImageContainer>
-              <ContentTitle>
-                <ContentH1>
-                  플로깅 기록
-                </ContentH1>
-                <ContentP>
-                  플로깅을 아시나요? <br />
-                </ContentP>
-              </ContentTitle>
-            </SubContent>
-          </Content>
-        </Fade>
+        <Content>
+          <SubContent>
+            <Fade>
+              <SwiperContainer>
+                <Swiper
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  scrollbar={{ draggable: true }}
+                  navigation
+                  pagination={{ clickable: true }}
+                  modules={[Controller]}
+                  controller={{ control: controlledSwiper }}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+                >
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                </Swiper>
+              </SwiperContainer>
+            </Fade>
+            <ContentTitle data-aos="fade-up">
+              <ContentH1>
+                플로깅
+              </ContentH1>
+              <ContentP>
+                플로깅을 아시나요? <br />
+                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
+                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
+                에코로그에서 플로깅을 기록하고, <br />
+                다른 사람에게 공유해보세요!<br />
+              </ContentP>
+            </ContentTitle>
+          </SubContent>
+        </Content>
+        <Content>
+          <SubContent>
+            <ContentTitle data-aos="fade-up">
+              <ContentH1>
+                플로깅
+              </ContentH1>
+              <ContentP>
+                플로깅을 아시나요? <br />
+                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
+                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
+                에코로그에서 플로깅을 기록하고, <br />
+                다른 사람에게 공유해보세요!<br />
+              </ContentP>
+            </ContentTitle>
+            <Fade>
+              <SwiperContainer>
+                <Swiper
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  scrollbar={{ draggable: true }}
+                  navigation
+                  pagination={{ clickable: true }}
+                  modules={[Controller]}
+                  controller={{ control: controlledSwiper }}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+                >
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                </Swiper>
+              </SwiperContainer>
+            </Fade>
+          </SubContent>
+        </Content>
+        <Content>
+          <SubContent>
+            <Fade>
+              <SwiperContainer>
+                <Swiper
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  scrollbar={{ draggable: true }}
+                  navigation
+                  pagination={{ clickable: true }}
+                  modules={[Controller]}
+                  controller={{ control: controlledSwiper }}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+                >
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                  <SwiperSlide className="swiper-fixed-width-300">
+                    <ContentImageContainer>
+                      <ContentImage src={phonex}>
+                      </ContentImage>
+                    </ContentImageContainer>
+                  </SwiperSlide>
+                </Swiper>
+              </SwiperContainer>
+            </Fade>
+            <ContentTitle data-aos="fade-up">
+              <ContentH1>
+                플로깅
+              </ContentH1>
+              <ContentP>
+                플로깅을 아시나요? <br />
+                스웨덴어 '플로카 업(Plocka upp)' + '조깅(Jogging)' <br />
+                나의 건강과 지구의 건강을 챙기는 플로깅! <br />
+                에코로그에서 플로깅을 기록하고, <br />
+                다른 사람에게 공유해보세요!<br />
+              </ContentP>
+            </ContentTitle>
+          </SubContent>
+        </Content>
       </ContentContainer>
     </Container>
   );
