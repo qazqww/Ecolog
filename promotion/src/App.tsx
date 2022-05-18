@@ -8,6 +8,7 @@ import color from "./common/thema";
 import PromotionTop from './components/PromotionTop';
 import PromotionContent from './components/PromotionContent';
 import Navbar from './components/Navbar';
+import PromotionEcolog from './components/PromotionEcolog';
 
 const AppDiv = styled.div`
   backgroud-color: ${color.white.default};
@@ -19,6 +20,7 @@ function App() {
     <AppDiv>
       <Navbar />
       <PromotionTop />
+      <PromotionEcolog />
       <PromotionContent />
     </AppDiv>
   );
