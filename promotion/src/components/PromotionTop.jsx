@@ -14,6 +14,13 @@ const Container = styled.div`
   background-image: url(${BackgroundSrc});
 `;
 
+const ContainerBox = styled.div`
+  position: absolute;
+  display:flex;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
 const HomeTextFrame = styled.div`
   position: absolute;
   width: 100%;
@@ -61,7 +68,7 @@ const TextBoxOpacity = styled.div`
   margin-left: 40px;
   position: absolute;
   display: flex;
-  color: ${color.green.default};
+  color: ${color.blue.ecolog};
   opacity: 0;
   margin-top: 40px;
   transition: all 0.3s;
@@ -94,38 +101,41 @@ const PromotionTop = () => {
   }, []);
 
   return (
-    <Container style={{ height: window.innerHeight }}>
-      <HomeTextFrame>
-        <TextDiv>
-          <TextBox>지금 바로 에코로그에서</TextBox>
-          <TextChangeFrame>
-          <TextBoxOpacity
-                style={{ opacity: 1, color: color.white.default, marginTop: 12 }}
+    <Container style={{ height: window.innerHeight * 0.95 }}>
+      <ContainerBox style={{ height: window.innerHeight * 0.95 }}>
+
+        <HomeTextFrame>
+          <TextDiv>
+            <TextBox>지금 바로 에코로그에서</TextBox>
+            <TextChangeFrame>
+            <TextBoxOpacity
+                  style={{ opacity: 1, color: color.white.default, marginTop: 12 }}
+                >
+                  <TextKeyword
+                    ref={el}
+                    style={
+                      overIndex === currentIndex + 1 ||
+                      (overIndex === 0 && currentIndex === maxIndex)
+                        ? { marginLeft: -40, color: color.blue.ecolog }
+                        : { color: color.blue.ecolog }
+                    }
+                  ></TextKeyword>
+                  <TextEnd>하며</TextEnd>
+                </TextBoxOpacity>
+            </TextChangeFrame>
+            <TextBox
+                style={
+                  overIndex === currentIndex + 1 ||
+                  (overIndex === 0 && currentIndex === maxIndex)
+                    ? { marginLeft: 0 }
+                    : { marginLeft: 80 }
+                }
               >
-                <TextKeyword
-                  ref={el}
-                  style={
-                    overIndex === currentIndex + 1 ||
-                    (overIndex === 0 && currentIndex === maxIndex)
-                      ? { marginLeft: -40, color: color.green.default }
-                      : { color: color.green.default }
-                  }
-                ></TextKeyword>
-                <TextEnd>하며</TextEnd>
-              </TextBoxOpacity>
-          </TextChangeFrame>
-          <TextBox
-              style={
-                overIndex === currentIndex + 1 ||
-                (overIndex === 0 && currentIndex === maxIndex)
-                  ? { marginLeft: 0 }
-                  : { marginLeft: 80 }
-              }
-            >
-              기록을 남겨보실래요? 
-          </TextBox>
-        </TextDiv>
-      </HomeTextFrame>
+                기록을 남겨보실래요? 
+            </TextBox>
+          </TextDiv>
+        </HomeTextFrame>
+      </ContainerBox>
     </Container>
   );
 };
