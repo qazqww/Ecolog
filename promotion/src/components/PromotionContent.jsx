@@ -5,16 +5,14 @@ import color from "../common/thema";
 import { Fade } from "react-awesome-reveal";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Carousel from 'react-bootstrap/Carousel'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination } from "swiper";
+import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
 import { Controller } from 'swiper';
 import 'swiper/css';
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import phonex from "../asset/image/phonex.png"
 
 //survey
 import survey1 from "../asset/image/survey/survey1.png";
@@ -40,7 +38,7 @@ import plog3 from "../asset/image/plog/plog2.png";
 import plog4 from "../asset/image/plog/plog3.png";
 
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const Container = styled.div`
   display: flex;
@@ -164,6 +162,7 @@ const PromotionContent = () => {
             <Fade>
               <SwiperContainer>
                 <Swiper
+                  loop={true}
                   spaceBetween={0}
                   slidesPerView={1}
                   scrollbar={{ draggable: true }}
@@ -171,6 +170,10 @@ const PromotionContent = () => {
                   pagination={{ clickable: true }}
                   modules={[Controller]}
                   controller={{ control: controlledSwiper }}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false
+                  }}
                   onSlideChange={() => console.log('slide change')}
                   onSwiper={(swiper) => console.log(swiper)}
                 >
@@ -208,6 +211,7 @@ const PromotionContent = () => {
             <Fade>
               <SwiperContainer>
                 <Swiper
+                  loop={true}
                   spaceBetween={0}
                   slidesPerView={1}
                   scrollbar={{ draggable: true }}
@@ -215,6 +219,10 @@ const PromotionContent = () => {
                   pagination={{ clickable: true }}
                   modules={[Controller]}
                   controller={{ control: controlledSwiper }}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false
+                  }}
                   onSlideChange={() => console.log('slide change')}
                   onSwiper={(swiper) => console.log(swiper)}
                 >
@@ -282,6 +290,7 @@ const PromotionContent = () => {
             <Fade>
               <SwiperContainer>
                 <Swiper
+                  loop={true}
                   spaceBetween={0}
                   slidesPerView={1}
                   scrollbar={{ draggable: true }}
@@ -289,6 +298,10 @@ const PromotionContent = () => {
                   pagination={{ clickable: true }}
                   modules={[Controller]}
                   controller={{ control: controlledSwiper }}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false
+                  }}
                   onSlideChange={() => console.log('slide change')}
                   onSwiper={(swiper) => console.log(swiper)}
                 >
@@ -320,6 +333,7 @@ const PromotionContent = () => {
             <Fade>
               <SwiperContainer>
                 <Swiper
+                  loop={true}
                   spaceBetween={0}
                   slidesPerView={1}
                   scrollbar={{ draggable: true }}
@@ -327,6 +341,10 @@ const PromotionContent = () => {
                   pagination={{ clickable: true }}
                   modules={[Controller]}
                   controller={{ control: controlledSwiper }}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false
+                  }}
                   onSlideChange={() => console.log('slide change')}
                   onSwiper={(swiper) => console.log(swiper)}
                 >
