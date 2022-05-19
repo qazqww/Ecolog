@@ -98,7 +98,6 @@ export async function createPost(postData: CreatePostData) {
     },
     transformRequest: formData => formData,
   });
-  console.log(response.data);
   return response.data;
 }
 
