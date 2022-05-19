@@ -14,9 +14,31 @@ import 'swiper/css';
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-
-import image1 from "../asset/image/ecolog1.png";
 import phonex from "../asset/image/phonex.png"
+
+//survey
+import survey1 from "../asset/image/survey/survey1.png";
+import survey2 from "../asset/image/survey/survey2.png";
+import survey3 from "../asset/image/survey/survey3.png";
+
+//avatar
+import avatar1 from "../asset/image/avatar/avatar1.png";
+import avatar2 from "../asset/image/avatar/avatar2.png";
+import avatar3 from "../asset/image/avatar/avatar3.png";
+
+//community
+import community1 from "../asset/image/community/community1.png";
+import community2 from "../asset/image/community/community2.png";
+import community3 from "../asset/image/community/community3.png";
+import community4 from "../asset/image/community/community4.png";
+import community5 from "../asset/image/community/community5.png";
+
+//plog
+import plog1 from "../asset/image/plog/plog1.png";
+import plog2 from "../asset/image/plog/plog1.gif";
+import plog3 from "../asset/image/plog/plog2.png";
+import plog4 from "../asset/image/plog/plog3.png";
+
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -154,31 +176,25 @@ const PromotionContent = () => {
                 >
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={plog1}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={plog2}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={plog3}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
-                      </ContentImage>
-                    </ContentImageContainer>
-                  </SwiperSlide>
-                  <SwiperSlide className="swiper-fixed-width-300">
-                    <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={plog4}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
@@ -204,31 +220,31 @@ const PromotionContent = () => {
                 >
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={community1}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={community2}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={community3}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={community4}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={community5}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
@@ -278,31 +294,19 @@ const PromotionContent = () => {
                 >
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={survey1}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={survey2}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
-                      </ContentImage>
-                    </ContentImageContainer>
-                  </SwiperSlide>
-                  <SwiperSlide className="swiper-fixed-width-300">
-                    <ContentImageContainer>
-                      <ContentImage src={phonex}>
-                      </ContentImage>
-                    </ContentImageContainer>
-                  </SwiperSlide>
-                  <SwiperSlide className="swiper-fixed-width-300">
-                    <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={survey3}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
@@ -328,31 +332,19 @@ const PromotionContent = () => {
                 >
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={avatar1}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={avatar2}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
                   <SwiperSlide className="swiper-fixed-width-300">
                     <ContentImageContainer>
-                      <ContentImage src={phonex}>
-                      </ContentImage>
-                    </ContentImageContainer>
-                  </SwiperSlide>
-                  <SwiperSlide className="swiper-fixed-width-300">
-                    <ContentImageContainer>
-                      <ContentImage src={phonex}>
-                      </ContentImage>
-                    </ContentImageContainer>
-                  </SwiperSlide>
-                  <SwiperSlide className="swiper-fixed-width-300">
-                    <ContentImageContainer>
-                      <ContentImage src={phonex}>
+                      <ContentImage src={avatar3}>
                       </ContentImage>
                     </ContentImageContainer>
                   </SwiperSlide>
